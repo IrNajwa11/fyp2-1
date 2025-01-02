@@ -6,6 +6,8 @@ import 'package:tflite_flutter/tflite_flutter.dart'; // Using tflite_flutter
 import 'base_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:image/image.dart' as img; // Image library for preprocessing
+import 'dInfoData.dart';
+import 'prediction_page.dart'; // Import PredictionPage
 
 class DScannerPage extends StatefulWidget {
   @override
@@ -23,13 +25,6 @@ class _DScannerPageState extends State<DScannerPage> {
     'Corn Cercospora Leaf Spot', 'Corn Common Rust', 'Corn Healthy', 'Potato Early Blight', 'Potato Late Blight',  
     'Potato Healthy', 'Tomato Early Blight', 'Tomato Late Blight', 'Tomato Yellow Leaf Curl Virus', 'Tomato Mosaic Virus', 'Tomato Healthy' 
   ];
-
-  // Function to handle tapping on the bottom navigation items
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index; // Update selected index when an item is tapped
-    });
-  }
 
   @override
   void initState() {
@@ -78,21 +73,18 @@ class _DScannerPageState extends State<DScannerPage> {
 
   // Function to preprocess the image and convert it into the correct input format
   Future<List<List<List<List<int>>>>> preprocessImage(File imageFile, int width, int height) async {
-    // Read the image from the file
     final bytes = await imageFile.readAsBytes();
     final img.Image image = img.decodeImage(Uint8List.fromList(bytes))!;
 
-    // Resize the image to the desired input size for the model
     final resizedImage = img.copyResize(image, width: width, height: height);
 
-    // Initialize the processedImage list to match the expected input format
     List<List<List<List<int>>>> processedImage = List.generate(
-      1, // This represents the batch size of 1
+      1, 
       (batchIndex) => List.generate(
         height, 
         (y) => List.generate(
           width, 
-          (x) => List.filled(3, 0), // RGB values
+          (x) => List.filled(3, 0), 
           growable: false
         ),
         growable: false,
@@ -100,17 +92,15 @@ class _DScannerPageState extends State<DScannerPage> {
       growable: false,
     );
 
-    // Populate the processedImage with RGB values from the resized image
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         img.Pixel pixel = resizedImage.getPixel(x, y);
-        processedImage[0][y][x][0] = pixel.r.toInt(); // Red channel
-        processedImage[0][y][x][1] = pixel.g.toInt(); // Green channel
-        processedImage[0][y][x][2] = pixel.b.toInt(); // Blue channel
+        processedImage[0][y][x][0] = pixel.r.toInt();
+        processedImage[0][y][x][1] = pixel.g.toInt();
+        processedImage[0][y][x][2] = pixel.b.toInt();
       }
     }
 
-    // Return the image in the expected 4D tensor format
     return processedImage;
   }
 
@@ -131,26 +121,30 @@ class _DScannerPageState extends State<DScannerPage> {
     }
 
     try {
-      // Preprocess image with width and height values for the model input size
-      int width = 224;  // Set the input width expected by your model
-      int height = 224; // Set the input height expected by your model
+      int width = 224;
+      int height = 224;
 
-      // Pass the image, width, and height to the preprocessImage function
       var inputImage = await preprocessImage(_image!, width, height);
-
       var output = List.generate(1, (i) => List.filled(11, 0.0));
 
       _interpreter.run(inputImage, output);
-      print("Prediction output: $output");
 
-      // Find the index of the highest probability
       int maxIndex = output[0].indexOf(output[0].reduce((a, b) => a > b ? a : b));
 
-      // Get the disease name corresponding to the highest probability
       String predictedDisease = _diseaseLabels[maxIndex];
 
       if (output.isNotEmpty) {
-        _showPredictionDialog("Predicted disease: $predictedDisease");
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PredictionPage(
+              image: _image!,
+              predictedDisease: predictedDisease,
+              predictionScores: output[0],
+              highestScore: output[0][maxIndex],
+            ),
+          ),
+        );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('No disease detected!')),
@@ -164,28 +158,9 @@ class _DScannerPageState extends State<DScannerPage> {
     }
   }
 
-  // Function to display the prediction result in a dialog
-  void _showPredictionDialog(String predictedDisease) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Prediction Result'),
-          content: Text(predictedDisease),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   void dispose() {
-    _interpreter.close(); // Close the interpreter to free resources
+    _interpreter.close();
     super.dispose();
   }
 
@@ -193,15 +168,13 @@ class _DScannerPageState extends State<DScannerPage> {
   Widget build(BuildContext context) {
     return BasePage(
       title: 'Disease Scanner',
-      selectedIndex: _selectedIndex, // Pass the selectedIndex
-      onItemTapped: _onItemTapped,  // Pass the onItemTapped function
-      child: Center( // Pass the child as a parameter
+      selectedIndex: _selectedIndex,
+      onItemTapped: (index) => setState(() => _selectedIndex = index),
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _image != null
-                ? Image.file(_image!)
-                : const Text("No image selected"),
+            _image != null ? Image.file(_image!) : const Text("No image selected"),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => _captureOrImportImage(ImageSource.camera),

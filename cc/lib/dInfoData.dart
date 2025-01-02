@@ -2,80 +2,59 @@ class DiseaseInfoData {
   static const List<Map<String, String>> diseaseList = [
     {
       'label': 'Corn Common Rust',
-      'image': 'assets/Corn_Common_Rust.jpg',
-      'description': 'A fungal disease affecting corn leaves.',
-      'causalAgent': 'Puccinia sorghi (fungus)',
-      'symptoms': 'Small circular or oval pustules appear on the leaves, turning brown over time.'
+      'causalAgent': 'Fungus, Puccinia sorghi ',
+      'treatment': 'Remove infected leaves and dispose of them away from healthy plants.\nApply copper-based fungicides or sulfur-based fungicides to prevent further spread.'
     },
     {
       'label': 'Corn Grey Leaf Spot',
-      'image': 'assets/Corn_Grey_Leaf_Spot.jpg',
-      'description': 'Characterized by grey spots on corn leaves.',
-      'causalAgent': 'Cercospora zeae-maydis (fungus)',
-      'symptoms': 'Grey or tan rectangular lesions on the leaves, often parallel to the leaf veins.'
+      'causalAgent': 'Fungus, Cercospora zeae-maydis',
+      'treatment': 'Practice crop rotation.\nAvoid overhead irrigation.\nRemove infected plant debris.\nUse fungicides containing chlorothalonil or mancozeb.'
     },
     {
       'label': 'Corn Healthy',
-      'image': 'assets/Corn_Healthy.jpg',
-      'description': 'Indicates a healthy corn crop.',
       'causalAgent': 'None',
-      'symptoms': 'No signs of disease; leaves are green and healthy.'
+      'treatment': 'No treatment necessary.'
     },
     {
       'label': 'Potato Early Blight',
-      'image': 'assets/Potato_Early_Blight.jpg',
-      'description': 'A fungal disease causing leaf damage in potatoes.',
-      'causalAgent': 'Alternaria solani (fungus)',
-      'symptoms': 'Dark concentric rings on older leaves, leading to premature defoliation.'
+      'causalAgent': 'Fungus; Alternaria solani',
+      'treatment': 'Remove infected leaves.\nApply fungicides with active ingredients like mancozeb or chlorothalonil.'
     },
     {
       'label': 'Potato Late Blight',
-      'image': 'assets/plb.JPG',
-      'description': 'A serious potato disease leading to rotting.',
-      'causalAgent': 'Phytophthora infestans (oomycete)',
-      'symptoms': 'Water-soaked spots on leaves and stems, turning brown or black, and tuber rot.'
+      'causalAgent': 'Oomycete, Phytophthora infestans',
+      'treatment': 'Regularly inspect plants for signs of the disease.\nRemove infected leaves promptly.\n3. Use fungicides like metalaxyl or mefenoxam, especially during humid, rainy periods.'
     },
     {
       'label': 'Potato Healthy',
-      'image': 'assets/ph.JPG',
-      'description': 'Indicates a healthy potato crop.',
       'causalAgent': 'None',
-      'symptoms': 'No signs of disease; leaves are vibrant and undamaged.'
+      'treatment': 'No treatment necessary.'
     },
     {
       'label': 'Tomato Early Blight',
-      'image': 'assets/teb.JPG',
-      'description': 'A common tomato disease caused by fungi.',
-      'causalAgent': 'Alternaria solani (fungus)',
-      'symptoms': 'Concentric rings on older leaves, leading to leaf yellowing and drop.'
+      'causalAgent': 'Fungus, Alternaria solani',
+      'treatment': 'Remove and discard infected leaves.\nApply fungicides such as copper or chlorothalonil.\nWater plants at the base to keep foliage dry.'
     },
     {
       'label': 'Tomato Late Blight',
-      'image': 'assets/tlb.JPG',
-      'description': 'A disease affecting tomato crops, causing leaf and fruit damage.',
-      'causalAgent': 'Phytophthora infestans (oomycete)',
-      'symptoms': 'Dark, water-soaked spots on leaves and stems; fruit develops brown, firm lesions.'
+      'causalAgent': 'Oomycete, Phytophthora infestans',
+      'treatment': 'Avoid overhead watering.\nRemove affected leaves immediately.\nApply fungicides like metalaxyl or mefenoxam to control the spread.'
     },
     {
       'label': 'Tomato Mosaic Virus',
-      'image': 'assets/Tomato_Mosaic_Virus.png',
-      'description': 'A viral disease causing mottled leaves in tomatoes.',
-      'causalAgent': 'Tobacco mosaic virus (TMV)',
-      'symptoms': 'Mottled light and dark green patterns on leaves; distorted or curled leaf growth.'
+      'causalAgent': 'Virus, Tobacco mosaic virus (TMV)',
+      'symptoms': 'Mottled light and dark green patterns on leaves; distorted or curled leaf growth.',
+      'treatment': 'Remove infected plants.\nAvoid planting tomatoes in the same spot for at least a season.\nDisinfect tools and maintain good hygiene to prevent contact with infected plants.'
     },
     {
       'label': 'Tomato Yellow Leaf Curl Virus',
-      'image': 'assets/tylcv.JPG',
-      'description': 'A viral disease causing yellowing and curling of tomato leaves.',
-      'causalAgent': 'Tomato yellow leaf curl virus (TYLCV)',
-      'symptoms': 'Leaves curl upward, turn yellow, and show reduced fruit production.'
+      'causalAgent': 'Virus, Tomato yellow leaf curl virus (TYLCV)',
+      'treatment': 'Remove infected plants.\nControl the vector (whiteflies) using insecticidal soap or neem oil.'
     },
     {
       'label': 'Tomato Healthy',
-      'image': 'assets/Tomato_Healthy.jpg',
-      'description': 'Indicates a healthy tomato crop.',
       'causalAgent': 'None',
-      'symptoms': 'No signs of disease; leaves and fruits are healthy and undamaged.'
+      'treatment': 'No treatment necessary.'
     },
   ];
 }
