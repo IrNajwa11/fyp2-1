@@ -1,60 +1,52 @@
-class DiseaseInfoData {
+class DiseaseInfoD {
   static const List<Map<String, String>> diseaseList = [
     {
       'label': 'Corn Common Rust',
-      'causalAgent': 'Fungus, Puccinia sorghi ',
-      'treatment': 'Remove infected leaves and dispose of them away from healthy plants.\nApply copper-based fungicides or sulfur-based fungicides to prevent further spread.'
+      'type': 'Fungal Disease',
+      'causalAgent': 'Puccinia sorghi',
+      'symptoms': 'Symptoms:\n1. Leaves:\n- Small, round reddish-brown lesions.\n- Yellowing of surrounding leaf tissue.\n- Premature leaf drop.\n2. Stems:\n- Rust-colored pustules may form.\n3. Vegetables:\n- No significant symptoms on kernels.'
     },
     {
       'label': 'Corn Grey Leaf Spot',
-      'causalAgent': 'Fungus, Cercospora zeae-maydis',
-      'treatment': 'Practice crop rotation.\nAvoid overhead irrigation.\nRemove infected plant debris.\nUse fungicides containing chlorothalonil or mancozeb.'
-    },
-    {
-      'label': 'Corn Healthy',
-      'causalAgent': 'None',
-      'treatment': 'No treatment necessary.'
+      'type': 'Fungal Disease',
+      'causalAgent': 'Cercospora zeae-maydis',
+      'symptoms': 'Symptoms:\n1. Leaves:\n- Grayish spots with dark borders.\n- Yellowing of leaf tissue.\n- Lesions may merge into large dead areas.\n2. Stems:\n- No significant symptoms.\n3. Vegetables:\n- No significant symptoms.'
     },
     {
       'label': 'Potato Early Blight',
-      'causalAgent': 'Fungus; Alternaria solani',
-      'treatment': 'Remove infected leaves.\nApply fungicides with active ingredients like mancozeb or chlorothalonil.'
+      'type': 'Fungal Disease',
+      'causalAgent': 'Alternaria solani',
+      'symptoms': 'Symptoms:\n1. Leaves:\n- Dark, concentric lesions with a target pattern.\n- Yellowing at the edges of lesions.\n2. Stems:\n- Dark streaks or lesions may appear.\n- Stems may rot if infected severely.\n3. Vegetables:\n- No direct symptoms, but reduced yield due to leaf damage.'
     },
     {
       'label': 'Potato Late Blight',
-      'causalAgent': 'Oomycete, Phytophthora infestans',
-      'treatment': 'Regularly inspect plants for signs of the disease.\nRemove infected leaves promptly.\n3. Use fungicides like metalaxyl or mefenoxam, especially during humid, rainy periods.'
-    },
-    {
-      'label': 'Potato Healthy',
-      'causalAgent': 'None',
-      'treatment': 'No treatment necessary.'
+      'type': 'Oomycete Disease',
+      'causalAgent': 'Phytophthora infestans',
+      'symptoms': 'Symptoms:\n1. Leaves:\n- Large, irregular dark lesions with a water-soaked appearance.\n- White fungal growth on the underside of leaves.\n- Rapid wilting of affected leaves.\n2. Stems:\n- Dark, sunken lesions on stems, leading to stem rot.\n3. Vegetables:\n- Dark, sunken spots on tubers; may rot rapidly under moist conditions.'
     },
     {
       'label': 'Tomato Early Blight',
-      'causalAgent': 'Fungus, Alternaria solani',
-      'treatment': 'Remove and discard infected leaves.\nApply fungicides such as copper or chlorothalonil.\nWater plants at the base to keep foliage dry.'
+      'type': 'Fungal Disease',
+      'causalAgent': 'Alternaria solani',
+      'symptoms': 'Symptoms:\n1. Leaves:\n- Dark, concentric lesions with a target pattern.\n- Yellowing of leaf tissue around lesions.\n2. Stems:\n- No significant lesions but may show signs of rotting in severe cases.\n3. Vegetables:\n- Fruit damage is rare, but reduced plant health can affect yield.'
     },
     {
       'label': 'Tomato Late Blight',
-      'causalAgent': 'Oomycete, Phytophthora infestans',
-      'treatment': 'Avoid overhead watering.\nRemove affected leaves immediately.\nApply fungicides like metalaxyl or mefenoxam to control the spread.'
+      'type': 'Oomycete Disease',
+      'causalAgent': 'Phytophthora infestans',
+      'symptoms': 'Symptoms:\n1. Leaves:\n- Dark, water-soaked lesions with irregular edges.\n- White fungal growth on the underside of the leaves.\n2. Stems:\n- Black streaks and lesions along stems.\n- Stem collapse in severe cases.\n3. Vegetables:\n- Fruit may develop dark, sunken lesions; rapid rotting in humid conditions.'
     },
     {
       'label': 'Tomato Mosaic Virus',
-      'causalAgent': 'Virus, Tobacco mosaic virus (TMV)',
-      'symptoms': 'Mottled light and dark green patterns on leaves; distorted or curled leaf growth.',
-      'treatment': 'Remove infected plants.\nAvoid planting tomatoes in the same spot for at least a season.\nDisinfect tools and maintain good hygiene to prevent contact with infected plants.'
+      'type': 'Viral Disease',
+      'causalAgent': 'Tobacco mosaic virus (TMV)',
+      'symptoms': 'Symptoms:\n1. Leaves:\n- Mottled light and dark green patterns.\n- Distorted, curled leaf growth.\n- Yellowing or chlorosis in the affected areas.\n2. Stems:\n- No significant symptoms.\n3. Vegetables:\n- Fruits may be misshapen, with a yellowish tint.'
     },
     {
       'label': 'Tomato Yellow Leaf Curl Virus',
-      'causalAgent': 'Virus, Tomato yellow leaf curl virus (TYLCV)',
-      'treatment': 'Remove infected plants.\nControl the vector (whiteflies) using insecticidal soap or neem oil.'
-    },
-    {
-      'label': 'Tomato Healthy',
-      'causalAgent': 'None',
-      'treatment': 'No treatment necessary.'
+      'type': 'Viral Disease',
+      'causalAgent': 'Tomato yellow leaf curl virus (TYLCV)',
+      'symptoms': 'Symptoms:\n1. Leaves:\n- Yellowing and curling of leaves.\n- Leaf veins become thickened and prominent.\n- Stunting of plant growth.\n2. Stems:\n- No significant symptoms.\n3. Vegetables:\n- Fruit size may be reduced, and plants show poor yield.'
     },
   ];
 }

@@ -44,13 +44,16 @@ class BasePage extends StatelessWidget {
         ),
         centerTitle: true,
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(50.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildLogoSection(),
-              _buildThemeToggleSection(themeProvider),
-            ],
+          preferredSize: const Size.fromHeight(80.0), // Adjust height for spacing
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0), // Add vertical padding
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildLogoSection(),
+                _buildThemeToggleSection(themeProvider),
+              ],
+            ),
           ),
         ),
       ),
@@ -80,7 +83,7 @@ class BasePage extends StatelessWidget {
             'assets/cropCare_logo.png',
             height: 50,
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 10), // Increase height for spacing
           const Text('Crop Care', style: TextStyle(fontSize: 18)),
         ],
       ),
@@ -108,7 +111,7 @@ class BasePage extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 10), // Increase height for spacing
           Text(
             themeProvider.isDarkMode ? 'Light Mode' : 'Dark Mode',
             style: const TextStyle(fontSize: 18),

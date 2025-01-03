@@ -1,7 +1,7 @@
-import 'package:cc/dTreatment1.dart';
 import 'package:flutter/material.dart';
 import 'dScanner_page.dart';
 import 'dInfo1.dart';
+import 'dTreatment1.dart';
 import 'fav_page.dart';
 import 'base_page.dart';
 
@@ -90,30 +90,36 @@ class HomePage extends StatelessWidget {
       child: Card(
         elevation: 2,
         margin: const EdgeInsets.symmetric(vertical: 10),
-        child: Container(
+        child: SizedBox(
+          width: 350, // Adjust this value to control the button width
           height: 100,
-          decoration: BoxDecoration(
-            border: Border.all(color: color),
-          ),
-          child: Row(
-            children: [
-              Container(
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
                 color: color,
-                width: 100,
-                alignment: Alignment.center,
-                child: Icon(icon, color: Colors.white, size: 50),
+                width: 3.0, // Increase this value to make the border thicker
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    label,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  color: color,
+                  width: 100,
+                  alignment: Alignment.center,
+                  child: Icon(icon, color: Colors.white, size: 50),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                      label,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

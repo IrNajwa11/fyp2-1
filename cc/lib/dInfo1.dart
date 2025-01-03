@@ -1,76 +1,95 @@
 import 'package:flutter/material.dart';
 import 'dInfo2.dart';
-import 'dInfoData.dart';
+import 'disease.dart'; // Import the Disease class
 import 'base_page.dart';
 
 class DiseaseInfoPage1 extends StatelessWidget {
+  final List<Disease> diseases = [
+    Disease('Corn Cercospora Leaf Spot', 'assets/Corn_Grey Leaf Spot.jpg'),
+    Disease('Corn Common Rust', 'assets/Corn_Common Rust.jpg'),
+    Disease('Potato Early Blight', 'assets/Potato_Early Blight.jpg'),
+    Disease('Potato Late Blight', 'assets/plb.JPG'),
+    Disease('Tomato Early Blight', 'assets/teb.JPG'),
+    Disease('Tomato Late Blight', 'assets/tlb.JPG'),
+    Disease('Tomato Yellow Leaf Curl Virus', 'assets/tylcv.JPG'),
+    Disease('Tomato Mosaic Virus', 'assets/Tomato_Mosaic Virus.png'),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    int selectedIndex = 1; // Disease Info is the 2nd item in the bottom nav
-
     return BasePage(
-      title: 'Disease Info',
-      selectedIndex: selectedIndex,
+      title: 'Disease Information',
+      selectedIndex: 1, // Update if needed to reflect the correct navigation index
       onItemTapped: (index) {
-        // Handle navigation logic if needed (if BasePage needs to switch pages)
+        // Handle bottom navigation actions if applicable
       },
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: ListView.builder(
-          itemCount: DiseaseInfoData.diseaseList.length,
-          itemBuilder: (context, index) {
-            var disease = DiseaseInfoData.diseaseList[index];
-            return _buildCustomButton(
-              context,
-              disease['label']!,
-              Colors.blue, // You can change the color as needed
-              Icons.info_outline, // You can change the icon as needed
-              () {
-                // Navigate to Disease Info page with specific disease info
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DiseaseInfoPage(disease: disease),
-                  ),
-                );
-              },
-            );
-          },
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: diseases.map((disease) {
+              return Column(
+                children: [
+                  _buildDiseaseButton(context, disease),
+                  const SizedBox(height: 20),
+                ],
+              );
+            }).toList(),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildCustomButton(BuildContext context, String label, Color color, IconData icon, VoidCallback onTap) {
+  Widget _buildDiseaseButton(BuildContext context, Disease disease) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DiseaseInfoPage2(disease: disease),
+          ),
+        );
+      },
       child: Card(
         elevation: 2,
         margin: const EdgeInsets.symmetric(vertical: 10),
-        child: Container(
+        child: SizedBox(
+          width: 350,
           height: 100,
-          decoration: BoxDecoration(
-            border: Border.all(color: color),
-          ),
-          child: Row(
-            children: [
-              Container(
-                color: color,
-                width: 100,
-                alignment: Alignment.center,
-                child: Icon(icon, color: Colors.white, size: 50),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color(0xFFBF5537),
+                width: 3.0,
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    label,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  color: const Color(0xFFBF5537),
+                  width: 100,
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    disease.imagePath,
+                    fit: BoxFit.cover,
+                    width: 90,
+                    height: 90,
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                      disease.name,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
