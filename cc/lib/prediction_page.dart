@@ -70,6 +70,7 @@ class PredictionPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    // Image with a11y properties
                     Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: borderColor, width: 4.0),
@@ -77,11 +78,17 @@ class PredictionPage extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
-                        child: Image.file(image, height: 200, width: 200, fit: BoxFit.cover),
+                        child: Image.file(
+                          image,
+                          height: 200,
+                          width: 200,
+                          fit: BoxFit.cover,
+                          semanticLabel: 'Predicted disease image for $predictedDisease',
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text('Predicted Disease: $predictedDisease', style: titleStyle),
+                    Text('Predicted Disease: $predictedDisease', style: titleStyle, semanticsLabel: 'Predicted Disease label: $predictedDisease'),
                     const SizedBox(height: 20),
                     Align(
                       alignment: Alignment.centerLeft,
@@ -101,11 +108,13 @@ class PredictionPage extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            semanticsLabel: 'Causal Agent: ${diseaseInfo['causalAgent']}',
                           ),
                           const SizedBox(height: 20),
                           Text(
                             'Treatment:',
                             style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
+                            semanticsLabel: 'Treatment label',
                           ),
                           const SizedBox(height: 10),
                           buildNumberedTreatment(
@@ -117,7 +126,7 @@ class PredictionPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    // Favorite Button and Label
+                    // Favorite Button and Label with a11y
                     Align(
                       alignment: Alignment.topRight,
                       child: Column(
@@ -151,8 +160,9 @@ class PredictionPage extends StatelessWidget {
                                 ),
                               );
                             },
+                            tooltip: isFavorited ? 'Remove from favorites' : 'Add to favorites',
                           ),
-                          Text('Favourite', style: bodyStyle), // The "Favourite" label below the button
+                          Text('Favourite', style: bodyStyle, semanticsLabel: 'Favourite label'), // The "Favourite" label below the button
                         ],
                       ),
                     ),

@@ -52,43 +52,53 @@ class DTreatmentPage1 extends StatelessWidget {
           ),
         );
       },
-      child: Card(
-        elevation: 2,
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        child: SizedBox(
-          width: 350,
-          height: 100,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color(0xFF528222),
-                width: 3.0,
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  color: const Color(0xFF528222), // Updated button color
-                  width: 100,
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    disease.imagePath, // Use image path from Disease
-                    fit: BoxFit.cover,
-                    width: 90,
-                    height: 90,
-                  ),
+      child: Semantics(
+        label: 'Tap to view treatment for ${disease.name}',
+        button: true, // Indicate this is a button for screen readers
+        child: Card(
+          elevation: 2,
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          child: SizedBox(
+            width: 350,
+            height: 100,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: const Color(0xFF528222),
+                  width: 3.0,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      disease.name,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+              ),
+              child: Row(
+                children: [
+                  Semantics(
+                    label: '${disease.name} image',
+                    child: Container(
+                      color: const Color(0xFF528222), // Updated button color
+                      width: 100,
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                        disease.imagePath, // Use image path from Disease
+                        fit: BoxFit.cover,
+                        width: 90,
+                        height: 90,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Semantics(
+                        label: 'Disease name: ${disease.name}',
+                        child: Text(
+                          disease.name,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

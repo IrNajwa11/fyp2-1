@@ -4,7 +4,7 @@ import 'disease.dart'; // Import the Disease class
 import 'base_page.dart';
 
 class DiseaseInfoPage1 extends StatelessWidget {
-  final List<Disease> diseases= [
+  final List<Disease> diseases = [
     Disease('Corn Cercospora Leaf Spot', 'assets/Corn_Grey Leaf Spot.jpg'),
     Disease('Corn Common Rust', 'assets/Corn_Common Rust.jpg'),
     Disease('Potato Early Blight', 'assets/Potato_Early Blight.jpg'),
@@ -52,43 +52,49 @@ class DiseaseInfoPage1 extends StatelessWidget {
           ),
         );
       },
-      child: Card(
-        elevation: 2,
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        child: SizedBox(
-          width: 350,
-          height: 100,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Color(0xFFBB593E),
-                width: 3.0,
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
+      child: Semantics(
+        button: true, // This marks the widget as a button for screen readers
+        label: 'Tap to view more information about ${disease.name}', // Screen reader description
+        child: Card(
+          elevation: 2,
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          child: SizedBox(
+            width: 350,
+            height: 100,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: Color(0xFFBB593E),
-                  width: 100,
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    disease.imagePath,
-                    fit: BoxFit.cover,
-                    width: 90,
-                    height: 90,
-                  ),
+                  width: 3.0,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      disease.name,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    color: Color(0xFFBB593E),
+                    width: 100,
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      disease.imagePath,
+                      fit: BoxFit.cover,
+                      width: 90,
+                      height: 90,
+                      semanticLabel: 'Image of ${disease.name}', // Image description
                     ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        disease.name,
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+                        semanticsLabel: 'Disease name: ${disease.name}', // Text description for screen readers
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

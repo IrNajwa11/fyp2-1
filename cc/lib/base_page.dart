@@ -39,13 +39,16 @@ class BasePage extends StatelessWidget {
             ),
           ),
         ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
+        title: Semantics(
+          label: 'App Bar - $title',
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+            overflow: TextOverflow.ellipsis, // Prevent title overflow
           ),
-          overflow: TextOverflow.ellipsis, // Prevent title overflow
         ),
         centerTitle: true,
         bottom: PreferredSize(
@@ -84,12 +87,18 @@ class BasePage extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(
-            'assets/cropCare_logo.png',
-            height: 50,
+          Semantics(
+            label: 'Logo - Crop Care',
+            child: Image.asset(
+              'assets/cropCare_logo.png',
+              height: 50,
+            ),
           ),
           const SizedBox(height: 10), // Increase height for spacing
-          const Text('Crop Care', style: TextStyle(fontSize: 18)),
+          Semantics(
+            label: 'Text - Crop Care',
+            child: const Text('Crop Care', style: TextStyle(fontSize: 18)),
+          ),
         ],
       ),
     );
@@ -101,25 +110,31 @@ class BasePage extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          GestureDetector(
-            onTap: themeProvider.toggleTheme,
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: themeProvider.isDarkMode ? Colors.white : Colors.black,
-              ),
-              padding: const EdgeInsets.all(16.0),
-              child: Icon(
-                themeProvider.isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,
-                color: themeProvider.isDarkMode ? Colors.black : Colors.white,
-                size: 20,
+          Semantics(
+            label: themeProvider.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+            child: GestureDetector(
+              onTap: themeProvider.toggleTheme,
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: themeProvider.isDarkMode ? Colors.white : Colors.black,
+                ),
+                padding: const EdgeInsets.all(16.0),
+                child: Icon(
+                  themeProvider.isDarkMode ? Icons.wb_sunny : Icons.nightlight_round,
+                  color: themeProvider.isDarkMode ? Colors.black : Colors.white,
+                  size: 20,
+                ),
               ),
             ),
           ),
           const SizedBox(height: 10), // Increase height for spacing
-          Text(
-            themeProvider.isDarkMode ? 'Light Mode' : 'Dark Mode',
-            style: const TextStyle(fontSize: 18),
+          Semantics(
+            label: themeProvider.isDarkMode ? 'Light Mode' : 'Dark Mode',
+            child: Text(
+              themeProvider.isDarkMode ? 'Light Mode' : 'Dark Mode',
+              style: const TextStyle(fontSize: 18),
+            ),
           ),
         ],
       ),
@@ -130,15 +145,18 @@ class BasePage extends StatelessWidget {
     return BottomNavigationBar(
       items: List.generate(itemColors.length, (index) {
         return BottomNavigationBarItem(
-          icon: Container(
-            decoration: BoxDecoration(
-              color: selectedIndex == index ? itemColors[index] : Colors.transparent,
-              border: Border.all(color: itemColors[index], width: 2),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(
-              _getIconForIndex(index),
-              color: selectedIndex == index ? Colors.white : itemColors[index],
+          icon: Semantics(
+            label: _getLabelForIndex(index),
+            child: Container(
+              decoration: BoxDecoration(
+                color: selectedIndex == index ? itemColors[index] : Colors.transparent,
+                border: Border.all(color: itemColors[index], width: 2),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Icon(
+                _getIconForIndex(index),
+                color: selectedIndex == index ? Colors.white : itemColors[index],
+              ),
             ),
           ),
           label: _getLabelForIndex(index),

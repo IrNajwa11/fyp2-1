@@ -39,7 +39,7 @@ class DTreatmentPage2 extends StatelessWidget {
     );
 
     return BasePage(
-      title: 'Disease Treatement',
+      title: 'Disease Treatment',
       selectedIndex: 3,
       onItemTapped: (index) {},
       child: Center(
@@ -51,16 +51,19 @@ class DTreatmentPage2 extends StatelessWidget {
               children: [
                 // Wrap image in a container with border
                 Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: borderColor, width: 5.0), // Border color and width
-                      borderRadius: BorderRadius.circular(10.0), // Optional: to round the corners of the border
-                    ),
-                    child: Image.asset(
-                      diseaseTreatment['image'],
-                      height: 150,
-                      width: 200,
-                      fit: BoxFit.cover,
+                  child: Semantics(
+                    label: 'Image of ${diseaseTreatment['label']} disease',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: borderColor, width: 5.0), // Border color and width
+                        borderRadius: BorderRadius.circular(10.0), // Optional: to round the corners of the border
+                      ),
+                      child: Image.asset(
+                        diseaseTreatment['image'],
+                        height: 150,
+                        width: 200,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -78,20 +81,29 @@ class DTreatmentPage2 extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        diseaseTreatment['label'] ?? 'Unknown Disease',
-                        style: titleStyle,
+                      Semantics(
+                        label: 'Disease label: ${diseaseTreatment['label']}',
+                        child: Text(
+                          diseaseTreatment['label'] ?? 'Unknown Disease',
+                          style: titleStyle,
+                        ),
                       ),
                       const SizedBox(height: 20),
-                      Text(
-                        diseaseTreatment['description'] ?? 'No description available.',
-                        style: bodyStyle,
+                      Semantics(
+                        label: 'Disease description: ${diseaseTreatment['description']}',
+                        child: Text(
+                          diseaseTreatment['description'] ?? 'No description available.',
+                          style: bodyStyle,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       // Treatments
-                      Text(
-                        'Treatments:',
-                        style: titleStyle.copyWith(fontSize: 22),
+                      Semantics(
+                        label: 'Treatments section',
+                        child: Text(
+                          'Treatments:',
+                          style: titleStyle.copyWith(fontSize: 22),
+                        ),
                       ),
                       const SizedBox(height: 10),
                       ...buildTreatmentSections(diseaseTreatment['treatments'], bodyStyle),
@@ -117,9 +129,12 @@ class DTreatmentPage2 extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              part,
-              style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
+            Semantics(
+              label: 'Part: $part',
+              child: Text(
+                part,
+                style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 5),
             ...buildNumberedList(items, bodyStyle),
@@ -140,15 +155,21 @@ class DTreatmentPage2 extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '${index + 1}. ',
-              style: bodyStyle,
+            Semantics(
+              label: 'Treatment #${index + 1}',
+              child: Text(
+                '${index + 1}. ',
+                style: bodyStyle,
+              ),
             ),
             Expanded(
-              child: Text(
-                treatment,
-                style: bodyStyle,
-                textAlign: TextAlign.justify,
+              child: Semantics(
+                label: 'Treatment description: $treatment',
+                child: Text(
+                  treatment,
+                  style: bodyStyle,
+                  textAlign: TextAlign.justify,
+                ),
               ),
             ),
           ],

@@ -48,16 +48,20 @@ class DiseaseInfoPage2 extends StatelessWidget {
               children: [
                 // Wrap image in a container with border
                 Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: borderColor, width: 5.0), // Border color and width
-                      borderRadius: BorderRadius.circular(10.0), // Optional: to round the corners of the border
-                    ),
-                    child: Image.asset(
-                      disease.imagePath,
-                      height: 150,
-                      width: 200,
-                      fit: BoxFit.cover,
+                  child: Semantics(
+                    image: true,
+                    label: 'Image of ${disease.name}', // Image description for screen readers
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: borderColor, width: 5.0), // Border color and width
+                        borderRadius: BorderRadius.circular(10.0), // Optional: to round the corners of the border
+                      ),
+                      child: Image.asset(
+                        disease.imagePath,
+                        height: 150,
+                        width: 200,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -75,9 +79,12 @@ class DiseaseInfoPage2 extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        diseaseInfo['label'] ?? 'Unknown Disease',
-                        style: titleStyle,
+                      Semantics(
+                        label: diseaseInfo['label'] ?? 'Unknown Disease', // Screen reader description for the title
+                        child: Text(
+                          diseaseInfo['label'] ?? 'Unknown Disease',
+                          style: titleStyle,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       // Disease details
@@ -86,9 +93,12 @@ class DiseaseInfoPage2 extends StatelessWidget {
                       buildRichText(
                           'Causal Agent', diseaseInfo['causalAgent'] ?? 'Unknown', bodyStyle),
                       const SizedBox(height: 20),
-                      Text(
-                        'Symptoms:',
-                        style: titleStyle.copyWith(fontSize: 22),
+                      Semantics(
+                        label: 'Symptoms:', // Screen reader label for the symptoms section
+                        child: Text(
+                          'Symptoms:',
+                          style: titleStyle.copyWith(fontSize: 22),
+                        ),
                       ),
                       const SizedBox(height: 10),
                       ...buildNumberedSymptomSections(
@@ -106,18 +116,21 @@ class DiseaseInfoPage2 extends StatelessWidget {
 
   // Helper method for displaying rich text
   Widget buildRichText(String title, String content, TextStyle bodyStyle) {
-    return Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(
-            text: '$title: ',
-            style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
-          ),
-          TextSpan(
-            text: content,
-            style: bodyStyle,
-          ),
-        ],
+    return Semantics(
+      label: '$title: $content', // Combine title and content for screen readers
+      child: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(
+              text: '$title: ',
+              style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: content,
+              style: bodyStyle,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -136,9 +149,12 @@ class DiseaseInfoPage2 extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              part,
-              style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
+            Semantics(
+              label: 'Symptom part: $part', // Screen reader label for each part of the symptoms
+              child: Text(
+                part,
+                style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 5),
             ...buildNumberedList(items, bodyStyle),
@@ -159,15 +175,21 @@ class DiseaseInfoPage2 extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              '${index + 1}. ',
-              style: bodyStyle,
+            Semantics(
+              label: 'Symptom number: ${index + 1}', // Screen reader label for the number of symptoms
+              child: Text(
+                '${index + 1}. ',
+                style: bodyStyle,
+              ),
             ),
             Expanded(
-              child: Text(
-                symptom,
-                style: bodyStyle,
-                textAlign: TextAlign.justify,
+              child: Semantics(
+                label: 'Symptom description: $symptom', // Symptom description for screen readers
+                child: Text(
+                  symptom,
+                  style: bodyStyle,
+                  textAlign: TextAlign.justify,
+                ),
               ),
             ),
           ],

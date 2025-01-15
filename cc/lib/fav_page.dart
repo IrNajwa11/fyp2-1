@@ -52,9 +52,13 @@ class FavoritePage extends StatelessWidget {
 
   // Method to format the date into day-month-year format
   String _formatDate(String date) {
-    final DateTime parsedDate = DateTime.parse(date); // Parse the date string to DateTime
-    final DateFormat dateFormat = DateFormat('dd-MM-yyyy'); // Define the format
-    return dateFormat.format(parsedDate); // Return the formatted date
+    try {
+      final DateTime parsedDate = DateTime.parse(date); // Parse the date string to DateTime
+      final DateFormat dateFormat = DateFormat('dd-MM-yyyy'); // Define the format
+      return dateFormat.format(parsedDate); // Return the formatted date
+    } catch (e) {
+      return date; // If parsing fails, return the original string (you can also handle errors here)
+    }
   }
 
   // Widget to build each favorite item
@@ -109,13 +113,8 @@ class FavoritePage extends StatelessWidget {
                   onPressed: () {
                     // Remove the favorite item
                     FavoritePage.favoriteList.remove(favorite);
-                    // Refresh the UI by navigating to the FavoritePage again
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FavoritePage(),
-                      ),
-                    );
+                    // Refresh the UI without navigation
+                    (context as Element).markNeedsBuild();
                   },
                 ),
               ],
