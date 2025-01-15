@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'dScanner_page.dart'; // Import pages for navigation
+import 'dInfo1.dart';
+import 'home_page.dart';
+import 'dTreatment1.dart';
+import 'fav_page.dart';
 
 class BasePage extends StatelessWidget {
   final String title;
@@ -65,11 +70,11 @@ class BasePage extends StatelessWidget {
       ),
       bottomNavigationBar: _buildBottomNavigationBar(selectedIndex, onItemTapped, [
         Color(0xFF0A8484),
-        Color(0xFFBF5537),
-        Color(0xFF6B5EF5),
-        Color(0xFF598230),
-        Color(0xFF897310),
-      ]),
+        Color(0xFFBB593E),
+        Color(0xFF4E73C7),
+        Color(0xFF528222),
+        Color( 0xFFD03B80),
+      ], context),
     );
   }
 
@@ -121,7 +126,7 @@ class BasePage extends StatelessWidget {
     );
   }
 
-  BottomNavigationBar _buildBottomNavigationBar(int selectedIndex, Function(int) onItemTapped, List<Color> itemColors) {
+  BottomNavigationBar _buildBottomNavigationBar(int selectedIndex, Function(int) onItemTapped, List<Color> itemColors, BuildContext context) {
     return BottomNavigationBar(
       items: List.generate(itemColors.length, (index) {
         return BottomNavigationBarItem(
@@ -140,8 +145,48 @@ class BasePage extends StatelessWidget {
         );
       }),
       currentIndex: selectedIndex,
-      onTap: onItemTapped,
+      onTap: (index) {
+        onItemTapped(index);
+        _navigateToPage(context, index); // Pass context to navigate
+      },
     );
+  }
+
+  void _navigateToPage(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DScannerPage()), // Navigate to Scanner page
+        );
+        break;
+      case 1:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DiseaseInfoPage1()), // Navigate to Info page
+        );
+        break;
+      case 2:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()), // Navigate to Home page
+        );
+        break;
+      case 3:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DTreatmentPage1()), // Navigate to Treatment page
+        );
+        break;
+      case 4:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => FavoritePage()), // Navigate to History page
+        );
+        break;
+      default:
+        break;
+    }
   }
 
   IconData _getIconForIndex(int index) {
@@ -150,7 +195,7 @@ class BasePage extends StatelessWidget {
       case 1: return Icons.menu_book_sharp; // Info
       case 2: return Icons.home; // Home
       case 3: return Icons.medical_services_sharp; // Treatment
-      case 4: return Icons.history; // History
+      case 4: return Icons.favorite; // History
       default: return Icons.home; // Default icon
     }
   }
@@ -161,7 +206,7 @@ class BasePage extends StatelessWidget {
       case 1: return 'Info';
       case 2: return 'Home';
       case 3: return 'Treatment';
-      case 4: return 'History';
+      case 4: return 'Favourite';
       default: return '';
     }
   }

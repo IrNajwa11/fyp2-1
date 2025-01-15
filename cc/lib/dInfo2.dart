@@ -22,7 +22,18 @@ class DiseaseInfoPage2 extends StatelessWidget {
     );
 
     // Fixed border color for the disease image
-    final borderColor = const Color(0xFFBF5537);
+    final borderColor = Color(0xFFBB593E);
+
+    // Determine the gradient based on the theme
+    final isLightMode = Theme.of(context).brightness == Brightness.light;
+    final containerGradient = LinearGradient(
+      colors: isLightMode
+          ? [Color(0xFFBB593E), Color.fromARGB(255, 235, 220, 220)] // Gradient for light mode
+          : [Color(0xFFBB593E), const Color(0xFF242424)], // Gradient for dark mode
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      stops: [0.02, 1],
+    );
 
     return BasePage(
       title: 'Disease Information',
@@ -31,155 +42,137 @@ class DiseaseInfoPage2 extends StatelessWidget {
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // Center the image above the gradient container
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: borderColor,
-                    width: 4.0,
-                  ),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10.0),
-                  child: Image.asset(
-                    disease.imagePath,
-                    height: 150,
-                    width: 200,
-                    fit: BoxFit.cover,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Wrap image in a container with border
+                Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: borderColor, width: 5.0), // Border color and width
+                      borderRadius: BorderRadius.circular(10.0), // Optional: to round the corners of the border
+                    ),
+                    child: Image.asset(
+                      disease.imagePath,
+                      height: 150,
+                      width: 200,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 20), // Space between the image and the gradient container
+                SizedBox(height: 20), // Space between the image and content
 
-              // Gradient container below the image that takes full screen width
-              Container(
-                width: double.infinity, // Full width
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 139, 60, 39), // Red color
-                      const Color(0xFF242424), // Black color
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [0.02, 1], // Red only for the top 2% of the space
+                // Gradient container for the details
+                Container(
+                  width: double.infinity, // Full width
+                  decoration: BoxDecoration(
+                    gradient: containerGradient,
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 60.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      diseaseInfo['label'] ?? 'Unknown Disease',
-                      style: titleStyle,
-                    ),
-                    const SizedBox(height: 20),
-                    // Disease details
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Type: ',
-                            style: bodyStyle.copyWith(
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: diseaseInfo['type'] ?? 'Unknown',
-                            style: bodyStyle,
-                          ),
-                        ],
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 40.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        diseaseInfo['label'] ?? 'Unknown Disease',
+                        style: titleStyle,
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Causal Agent: ',
-                            style: bodyStyle.copyWith(
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: diseaseInfo['causalAgent'] ?? 'Unknown',
-                            style: bodyStyle,
-                          ),
-                        ],
+                      const SizedBox(height: 20),
+                      // Disease details
+                      buildRichText('Type', diseaseInfo['type'] ?? 'Unknown', bodyStyle),
+                      const SizedBox(height: 20),
+                      buildRichText(
+                          'Causal Agent', diseaseInfo['causalAgent'] ?? 'Unknown', bodyStyle),
+                      const SizedBox(height: 20),
+                      Text(
+                        'Symptoms:',
+                        style: titleStyle.copyWith(fontSize: 22),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Symptoms display
-                    Text(
-                      'Symptoms:',
-                      style: bodyStyle.copyWith(
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Iterate over the categories of symptoms (Leaves, Stems, Vegetable)
-                        ...((diseaseInfo['symptoms'] as Map<String, List<String>>?)?.entries.map((entry) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${entry.key}:',
-                                  style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 5),
-                                ...entry.value.map((symptom) {
-                                  return Text(
-                                    symptom,
-                                    style: bodyStyle,
-                                  );
-                                }).toList(),
-                              ],
-                            ),
-                          );
-                        }) ?? []),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    // Optimum Conditions display
-                    Text(
-                      'Optimum Conditions:',
-                      style: bodyStyle.copyWith(
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Display optimum conditions
-                        Text(
-                          'Temperature: ${diseaseInfo['optimumConditions']?['Temperature'] ?? 'Unknown'}',
-                          style: bodyStyle,
-                        ),
-                        Text(
-                          'Humidity: ${diseaseInfo['optimumConditions']?['Humidity'] ?? 'Unknown'}',
-                          style: bodyStyle,
-                        ),
-                        Text(
-                          'Soil: ${diseaseInfo['optimumConditions']?['Soil'] ?? 'Unknown'}',
-                          style: bodyStyle,
-                        ),
-                      ],
-                    ),
-                  ],
+                      const SizedBox(height: 10),
+                      ...buildNumberedSymptomSections(
+                          diseaseInfo['symptoms'], bodyStyle),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  // Helper method for displaying rich text
+  Widget buildRichText(String title, String content, TextStyle bodyStyle) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: '$title: ',
+            style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
+          ),
+          TextSpan(
+            text: content,
+            style: bodyStyle,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Helper method to build numbered symptom sections
+  List<Widget> buildNumberedSymptomSections(
+      Map<String, List<String>>? symptoms, TextStyle bodyStyle) {
+    if (symptoms == null) return [];
+
+    return symptoms.entries.map((entry) {
+      final part = entry.key;
+      final items = entry.value;
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              part,
+              style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 5),
+            ...buildNumberedList(items, bodyStyle),
+          ],
+        ),
+      );
+    }).toList();
+  }
+
+  // Helper method to create a numbered list of symptoms
+  List<Widget> buildNumberedList(List<String> items, TextStyle bodyStyle) {
+    return items.asMap().entries.map((entry) {
+      final index = entry.key;
+      final symptom = entry.value;
+
+      return Padding(
+        padding: const EdgeInsets.only(left: 20.0, top: 5.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${index + 1}. ',
+              style: bodyStyle,
+            ),
+            Expanded(
+              child: Text(
+                symptom,
+                style: bodyStyle,
+                textAlign: TextAlign.justify,
+              ),
+            ),
+          ],
+        ),
+      );
+    }).toList();
   }
 }

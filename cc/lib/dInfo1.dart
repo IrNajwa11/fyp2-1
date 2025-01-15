@@ -4,7 +4,7 @@ import 'disease.dart'; // Import the Disease class
 import 'base_page.dart';
 
 class DiseaseInfoPage1 extends StatelessWidget {
-  final List<Disease> diseases = [
+  final List<Disease> diseases= [
     Disease('Corn Cercospora Leaf Spot', 'assets/Corn_Grey Leaf Spot.jpg'),
     Disease('Corn Common Rust', 'assets/Corn_Common Rust.jpg'),
     Disease('Potato Early Blight', 'assets/Potato_Early Blight.jpg'),
@@ -61,14 +61,14 @@ class DiseaseInfoPage1 extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(
-                color: const Color(0xFFBF5537),
+                color: Color(0xFFBB593E),
                 width: 3.0,
               ),
             ),
             child: Row(
               children: [
                 Container(
-                  color: const Color(0xFFBF5537),
+                  color: Color(0xFFBB593E),
                   width: 100,
                   alignment: Alignment.center,
                   child: Image.asset(

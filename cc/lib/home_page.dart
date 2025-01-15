@@ -1,3 +1,4 @@
+import 'package:cc/dTreatment2.dart';
 import 'package:flutter/material.dart';
 import 'dScanner_page.dart';
 import 'dInfo1.dart';
@@ -22,13 +23,13 @@ class HomePage extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildCustomButton(
+              _buildAccessibleButton(
                 context,
                 'Disease Scanner',
                 const Color(0xFF0A8484),
                 Icons.camera_alt_sharp,
+                'Navigate to Disease Scanner page',
                 () {
-                  // Navigate to Disease Scanner page
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => DScannerPage()),
@@ -36,13 +37,13 @@ class HomePage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 20),
-              _buildCustomButton(
+              _buildAccessibleButton(
                 context,
                 'Disease Info',
-                const Color(0xFFBF5537),
+                const Color(0XFFBB593E),
                 Icons.menu_book_sharp,
+                'Navigate to Disease Info page',
                 () {
-                  // Navigate to Disease Info page
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => DiseaseInfoPage1()),
@@ -50,13 +51,13 @@ class HomePage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 20),
-              _buildCustomButton(
+              _buildAccessibleButton(
                 context,
                 'Disease Treatment',
-                const Color(0xFF598230),
+                const Color(0xFF528222),
                 Icons.medical_services_sharp,
+                'Navigate to Disease Treatment page',
                 () {
-                  // Navigate to Disease Treatment page
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => DTreatmentPage1()),
@@ -64,16 +65,16 @@ class HomePage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 20),
-              _buildCustomButton(
+              _buildAccessibleButton(
                 context,
-                'History',
-                const Color(0xFF897310),
+                'Favourite',
+                const Color(0xFFD03B80),
                 Icons.history,
+                'Navigate to Favourite page',
                 () {
-                  // Navigate to Favourite page (History is likely a favourite page)
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FavouritePage.empty()),
+                    MaterialPageRoute(builder: (context) => FavoritePage()),
                   );
                 },
               ),
@@ -84,41 +85,51 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildCustomButton(BuildContext context, String label, Color color, IconData icon, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        elevation: 2,
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        child: SizedBox(
-          width: 350, // Adjust this value to control the button width
-          height: 100,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: color,
-                width: 3.0, // Increase this value to make the border thicker
-              ),
-            ),
-            child: Row(
-              children: [
-                Container(
+  Widget _buildAccessibleButton(
+      BuildContext context,
+      String label,
+      Color color,
+      IconData icon,
+      String semanticLabel,
+      VoidCallback onTap) {
+    return Semantics(
+      button: true,
+      label: semanticLabel,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Card(
+          elevation: 2,
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          child: SizedBox(
+            width: 350,
+            height: 100,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
                   color: color,
-                  width: 100,
-                  alignment: Alignment.center,
-                  child: Icon(icon, color: Colors.white, size: 50),
+                  width: 3.0,
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      label,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    color: color,
+                    width: 100,
+                    alignment: Alignment.center,
+                    child: Icon(icon, color: Colors.white, size: 50),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        label,
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

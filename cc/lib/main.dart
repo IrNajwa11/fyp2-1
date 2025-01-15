@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
                   )
                 : ThemeData.light().copyWith(
                     primaryColor: Color(0xFF0A8484),
-                    scaffoldBackgroundColor: Colors.white,
+                    scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
                   ),
             home: HomePage(),
           );

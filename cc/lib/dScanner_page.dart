@@ -212,6 +212,9 @@ class _DScannerPageState extends State<DScannerPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Check the current theme mode (light or dark)
+    bool isLightMode = Theme.of(context).brightness == Brightness.light;
+
     return BasePage(
       title: 'Disease Scanner',
       selectedIndex: _selectedIndex,
@@ -221,12 +224,11 @@ class _DScannerPageState extends State<DScannerPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (_isImageCaptured)
-              // Resize the image to 100x100 for display purposes
               Image.file(
                 _image!,
-                width: 300, // Resize the image temporarily
-                height: 250, // Resize the image temporarily
-                fit: BoxFit.cover, // Ensures the image is cropped to fit the size
+                width: 300,
+                height: 250,
+                fit: BoxFit.cover,
               )
             else if (_isCameraInitialized)
               SizedBox(
@@ -250,33 +252,42 @@ class _DScannerPageState extends State<DScannerPage> {
             const SizedBox(height: 20),
 
             // Import Image Button with Gallery Icon and Text
-            ElevatedButton.icon(
-              onPressed: _importImage,
-              icon: const Icon(Icons.photo_library),
-              label: const Text('Import Image from Gallery',
-                style: TextStyle(fontSize: 18),
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.black,
-                side: const BorderSide(color: Color(0xFF0A8484), width: 5),
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: _importImage,
+                icon: const Icon(Icons.photo_library),
+                label: const Text('Import Image from Gallery',
+                  style: TextStyle(fontSize: 18),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: isLightMode ? Colors.white : Colors.black,
+                  onPrimary: isLightMode ? Colors.black : Colors.white, // Text color
+                  side: const BorderSide(color: Color(0xFF0A8484), width: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                ),
               ),
             ),
+
             const SizedBox(height: 20),
 
             // Scan and Predict Button with Styled Border and Size
-            ElevatedButton(
-              onPressed: _predictDisease,
-              child: const Text(
-                'Predict',
-                style: TextStyle(fontSize: 18),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _predictDisease,
+                child: const Text(
+                  'Predict',
+                  style: TextStyle(fontSize: 18),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: isLightMode ? Colors.white : Colors.black,
+                  onPrimary: isLightMode ? Colors.black : Colors.white, // Text color
+                  side: const BorderSide(color: Color(0xFF0A8484), width: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                ),
               ),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.black,
-                side: const BorderSide(color: Color(0xFF0A8484), width: 5),
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              ),
-            )
+            ),
           ],
         ),
       ),

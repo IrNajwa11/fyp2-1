@@ -1,67 +1,128 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Import intl package
+import 'base_page.dart';
 
-class FavouritePage extends StatefulWidget {
-  final File? image;
-  final String? predictedDisease;
-  final DateTime? predictionDate;
+class FavoritePage extends StatelessWidget {
+  static List<Map<String, dynamic>> favoriteList = []; // Static list to hold favorite data
 
-  // Constructor for displaying the page with data (favorite predictions)
-  FavouritePage({
-    Key? key,
-    required this.image,
-    required this.predictedDisease,
-    required this.predictionDate,
-  }) : super(key: key);
+  // Method to add a favorite item
+  static void addFavorite(Map<String, dynamic> favorite) {
+    favoriteList.add(favorite);
+  }
 
-  // Constructor for the empty page (before the user adds any favorite prediction)
-  FavouritePage.empty({Key? key})
-      : image = null,
-        predictedDisease = null,
-        predictionDate = null,
-        super(key: key);
-
-  @override
-  _FavouritePageState createState() => _FavouritePageState();
-}
-
-class _FavouritePageState extends State<FavouritePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Favorites'),
+    final theme = Theme.of(context);
+    final gradientColors = theme.brightness == Brightness.light
+        ? [const Color(0xFFD03B80), Colors.white]
+        : [const Color(0xFFD03B80), const Color(0xFF121212)];
+
+    return BasePage(
+      title: 'Favourite Diseases',
+      selectedIndex: 4, // Make sure the second tab (Favorites) is selected
+      onItemTapped: (index) {
+        if (index == 0) {
+          Navigator.pop(context); // Return to the PredictionPage when tapped
+        }
+      },
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(  // Make the content scrollable
+            child: Column(
+              children: favoriteList.map((favorite) {
+                final disease = favorite['disease'];
+                final image = favorite['image'] as File;
+                final date = favorite['date']; // Get the date
+                final formattedDate = _formatDate(date); // Format the date
+                return Column(
+                  children: [
+                    _buildFavoriteItem(context, disease, image, formattedDate, favorite),
+                    const SizedBox(height: 20),
+                  ],
+                );
+              }).toList(),
+            ),
+          ),
+        ),
       ),
-      body: widget.image == null
-          ? Center(
-              child: const Text(
-                'No favorites yet. Make a prediction to add it here!',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
-              ),
-            )
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Display the image
-                  Image.file(widget.image!),
-                  const SizedBox(height: 16),
-                  // Display the predicted disease
-                  Text(
-                    'Predicted Disease: ${widget.predictedDisease}',
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  // Display the prediction date
-                  Text(
-                    'Prediction Date: ${widget.predictionDate?.toLocal().toString().split(' ')[0]}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ],
+    );
+  }
+
+  // Method to format the date into day-month-year format
+  String _formatDate(String date) {
+    final DateTime parsedDate = DateTime.parse(date); // Parse the date string to DateTime
+    final DateFormat dateFormat = DateFormat('dd-MM-yyyy'); // Define the format
+    return dateFormat.format(parsedDate); // Return the formatted date
+  }
+
+  // Widget to build each favorite item
+  Widget _buildFavoriteItem(BuildContext context, String disease, File image, String date, Map<String, dynamic> favorite) {
+    return GestureDetector(
+      onTap: () {
+        // Handle tap if needed
+      },
+      child: Card(
+        elevation: 2,
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        child: SizedBox(
+          width: 350,
+          height: 100,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color(0xFF0A8484),
+                width: 2.0,
               ),
             ),
+            child: Row(
+              children: [
+                ClipRRect(
+                  child: Image.file(image, height: 95, width: 85, fit: BoxFit.cover),
+                ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          disease,
+                          style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
+                          overflow: TextOverflow.ellipsis,  // Allow overflow handling
+                          softWrap: true,  // Allow text to wrap to the next line if necessary
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Predicted on: $date',  // Display the formatted prediction date
+                          style: const TextStyle(fontSize: 14.0, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                IconButton(
+                  iconSize: 30.0,
+                  icon: Icon(Icons.delete, color: Colors.red),
+                  onPressed: () {
+                    // Remove the favorite item
+                    FavoritePage.favoriteList.remove(favorite);
+                    // Refresh the UI by navigating to the FavoritePage again
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FavoritePage(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

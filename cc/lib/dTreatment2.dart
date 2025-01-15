@@ -1,70 +1,159 @@
 import 'package:flutter/material.dart';
+import 'dTreatmentData.dart';
+import 'disease.dart'; // Import the Disease class
 import 'base_page.dart'; // Import BasePage
 
-class DTreatmentPage extends StatelessWidget {
-  final Map<String, String> treatment;
+class DTreatmentPage2 extends StatelessWidget {
+  final Disease disease;
 
-  const DTreatmentPage({Key? key, required this.treatment}) : super(key: key);
+  DTreatmentPage2({required this.disease});
 
   @override
   Widget build(BuildContext context) {
-    int selectedIndex = 2; // Disease Treatment is the 3rd item in the bottom nav
+    final diseaseTreatment = DiseaseTreatmentData.treatmentList.firstWhere(
+      (treatment) => treatment['label'] == disease.name,
+      orElse: () => {},
+    );
+
+    // Define adjustable text styles
+    final TextStyle titleStyle = TextStyle(
+      fontSize: 25.0,
+      fontWeight: FontWeight.bold,
+    );
+    final TextStyle bodyStyle = TextStyle(
+      fontSize: 22.0,
+    );
+
+    // Fixed border color for the disease image
+    final borderColor = const Color(0xFF598230);
+
+    // Determine the gradient based on the theme
+    final isLightMode = Theme.of(context).brightness == Brightness.light;
+    final containerGradient = LinearGradient(
+      colors: isLightMode
+          ? [const Color(0xFF598230), Color.fromARGB(255, 235, 220, 220)] // Gradient for light mode
+          : [const Color(0xFF598230), const Color(0xFF242424)], // Gradient for dark mode
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      stops: [0.02, 1],
+    );
 
     return BasePage(
-      title: 'Disease Treatment',
-      selectedIndex: selectedIndex,
-      onItemTapped: (index) {
-        // Handle navigation logic if needed (if BasePage needs to switch pages)
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            // Treatment Name in Bold, Centered at the Top
-            Center(
-              child: Text(
-                treatment['label']!, // Treatment Name
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+      title: 'Disease Treatement',
+      selectedIndex: 3,
+      onItemTapped: (index) {},
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Wrap image in a container with border
+                Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: borderColor, width: 5.0), // Border color and width
+                      borderRadius: BorderRadius.circular(10.0), // Optional: to round the corners of the border
+                    ),
+                    child: Image.asset(
+                      diseaseTreatment['image'],
+                      height: 150,
+                      width: 200,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 20), // Spacing between name and other content
+                SizedBox(height: 20), // Space between the image and content
 
-            // Treatment Image
-            Image.asset(treatment['image']!),
-            const SizedBox(height: 16),
-
-            // Treatment Description
-            Text(
-              'Description: ${treatment['description']}',
-              style: const TextStyle(fontSize: 18),
+                // Gradient container for the details
+                Container(
+                  width: double.infinity, // Full width
+                  decoration: BoxDecoration(
+                    gradient: containerGradient,
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 40.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        diseaseTreatment['label'] ?? 'Unknown Disease',
+                        style: titleStyle,
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        diseaseTreatment['description'] ?? 'No description available.',
+                        style: bodyStyle,
+                      ),
+                      const SizedBox(height: 20),
+                      // Treatments
+                      Text(
+                        'Treatments:',
+                        style: titleStyle.copyWith(fontSize: 22),
+                      ),
+                      const SizedBox(height: 10),
+                      ...buildTreatmentSections(diseaseTreatment['treatments'], bodyStyle),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 8),
-
-            // Treatment Method
-            Text(
-              'Treatment Method: ${treatment['treatmentMethod']}',
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 8),
-
-            // Dosages
-            Text(
-              'Dosages: ${treatment['dosages']}',
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 8),
-
-            // Notes
-            Text(
-              'Notes: ${treatment['notes']}',
-              style: const TextStyle(fontSize: 18),
-            ),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  // Helper method for displaying treatment sections
+  List<Widget> buildTreatmentSections(Map<String, List<String>> treatments, TextStyle bodyStyle) {
+    return treatments.entries.map((entry) {
+      final part = entry.key;
+      final items = entry.value;
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              part,
+              style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 5),
+            ...buildNumberedList(items, bodyStyle),
+          ],
+        ),
+      );
+    }).toList();
+  }
+
+  // Helper method to create a numbered list of treatments
+  List<Widget> buildNumberedList(List<String> items, TextStyle bodyStyle) {
+    return items.asMap().entries.map((entry) {
+      final index = entry.key;
+      final treatment = entry.value;
+
+      return Padding(
+        padding: const EdgeInsets.only(left: 20.0, top: 5.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${index + 1}. ',
+              style: bodyStyle,
+            ),
+            Expanded(
+              child: Text(
+                treatment,
+                style: bodyStyle,
+                textAlign: TextAlign.justify,
+              ),
+            ),
+          ],
+        ),
+      );
+    }).toList();
   }
 }

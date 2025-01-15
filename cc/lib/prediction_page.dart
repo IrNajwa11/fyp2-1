@@ -1,13 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'base_page.dart'; // Import BasePage
-import 'dInfodata.dart'; // Import DiseaseInfoData
+import 'dInfoData.dart'; // Mock data import
+import 'fav_page.dart'; // Import FavoritePage for navigation
 
 class PredictionPage extends StatelessWidget {
   final File image;
   final List<double> predictionScores;
   final String predictedDisease;
   final double highestScore;
+
+  static int idCounter = 0; // Static variable to track the ID for each prediction
 
   const PredictionPage({
     Key? key,
@@ -19,44 +22,47 @@ class PredictionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Find the disease data based on predicted disease label
-    final diseaseInfo = DiseaseInfoData.diseaseList
-        .firstWhere((disease) => disease['label'] == predictedDisease);
+    final diseaseInfo = DiseaseInfoData.diseaseList.firstWhere(
+        (disease) => disease['label'] == predictedDisease);
 
-    // Define adjustable text styles
-    final TextStyle titleStyle = TextStyle(
-      fontSize: 25.0,
-      fontWeight: FontWeight.bold,
-    );
-    final TextStyle bodyStyle = TextStyle(
-      fontSize: 22.0,
-    );
+    final TextStyle titleStyle = const TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold);
+    final TextStyle bodyStyle = const TextStyle(fontSize: 22.0);
 
-    // Determine border color for the image
     final borderColor = predictedDisease.toLowerCase().contains('healthy')
         ? const Color(0xFF0A8484)
-        : const Color(0xFFBF5537);
+        : const Color(0xFFA7482E);
+
+    final theme = Theme.of(context);
+    final gradientColors = theme.brightness == Brightness.light
+        ? [const Color(0xFF0A8484), Colors.white]
+        : [const Color(0xFF0A8484), const Color(0xFF121212)];
+
+    // Check if the disease is already in the favorites list
+    final isFavorited = FavoritePage.favoriteList.any((favorite) =>
+        favorite['disease'] == predictedDisease && favorite['image'] == image);
 
     return BasePage(
       title: 'Prediction Result',
       selectedIndex: 0,
-      onItemTapped: (index) {},
+      onItemTapped: (index) {
+        if (index == 1) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FavoritePage()),
+          );
+        }
+      },
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              // Gradient body container
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      const Color(0xFF0A8484), // Start color (can change)
-                      Color.fromARGB(255, 36, 36, 36), // End color (can change)
-                    ],
-                    begin: Alignment.topCenter, // Gradient direction (can change)
-                    end: Alignment.bottomCenter, // Gradient direction (can change)
-                    stops: [0.000000000001, 1.0], // Optional: control the gradient transition
+                    colors: gradientColors,
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -64,46 +70,30 @@ class PredictionPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Display the image with border
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(
-                          color: borderColor,
-                          width: 4.0,
-                        ),
+                        border: Border.all(color: borderColor, width: 4.0),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
-                        child: Image.file(
-                          image,
-                          height: 200,
-                          width: 200,
-                          fit: BoxFit.cover,
-                        ),
+                        child: Image.file(image, height: 200, width: 200, fit: BoxFit.cover),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    // Display predicted disease name
-                    Text(
-                      'Predicted Disease: $predictedDisease',
-                      style: titleStyle,
-                    ),
+                    Text('Predicted Disease: $predictedDisease', style: titleStyle),
                     const SizedBox(height: 20),
-                    // Display causal agent and treatment info
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Causal Agent
                           Text.rich(
                             TextSpan(
                               children: [
                                 TextSpan(
                                   text: 'Causal Agent: ',
-                                  style: bodyStyle.copyWith(
-                                      fontWeight: FontWeight.bold),
+                                  style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 TextSpan(
                                   text: diseaseInfo['causalAgent'],
@@ -113,11 +103,9 @@ class PredictionPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          // Treatment
                           Text(
                             'Treatment:',
-                            style: bodyStyle.copyWith(
-                                fontWeight: FontWeight.bold),
+                            style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10),
                           buildNumberedTreatment(
@@ -125,6 +113,46 @@ class PredictionPage extends StatelessWidget {
                             diseaseInfo['treatment'] as String,
                             bodyStyle,
                           ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    // Favorite Button and Label
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Column(
+                        children: [
+                          IconButton(
+                            iconSize: 36.0,
+                            icon: Icon(
+                              isFavorited ? Icons.favorite : Icons.favorite_border,
+                              color: isFavorited ? Color(0xFFD03B80) : null,
+                            ),
+                            onPressed: () {
+                              if (!isFavorited) {
+                                final favorite = {
+                                  'id': idCounter++,
+                                  'image': image,
+                                  'disease': predictedDisease,
+                                  'date': DateTime.now().toString(),
+                                };
+                                FavoritePage.addFavorite(favorite);
+                              }
+                              // Refresh UI
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PredictionPage(
+                                    image: image,
+                                    predictionScores: predictionScores,
+                                    predictedDisease: predictedDisease,
+                                    highestScore: highestScore,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          Text('Favourite', style: bodyStyle), // The "Favourite" label below the button
                         ],
                       ),
                     ),
@@ -140,13 +168,9 @@ class PredictionPage extends StatelessWidget {
 
   Widget buildNumberedTreatment(
       BuildContext context, String treatmentText, TextStyle textStyle) {
-    // Split treatment into sentences
     List<String> sentences = treatmentText.split('.');
 
-    // List to hold all formatted sentences
     List<Widget> formattedSentences = [];
-
-    // Loop through each sentence, adding numbering and indentation
     for (int i = 0; i < sentences.length; i++) {
       if (sentences[i].isNotEmpty) {
         String sentence = sentences[i].trim();
@@ -154,24 +178,15 @@ class PredictionPage extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Numbering
-              Text(
-                '${i + 1}. ',
-                style: textStyle,
-              ),
-              // Sentence
+              Text('${i + 1}. ', style: textStyle),
               Expanded(
-                child: Text(
-                  sentence,
-                  style: textStyle,
-                ),
+                child: Text(sentence, style: textStyle),
               ),
             ],
           ),
         );
       }
     }
-
     return Column(children: formattedSentences);
   }
 }
