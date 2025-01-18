@@ -27,29 +27,32 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  'assets/cropCare_logo.png',
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.cover,
+          child: Semantics(
+            enabled: false, // This makes everything inside the Semantics widget not readable by screen readers.
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'assets/cropCare_logo.png',
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 25),
-              const Text('Crop Care', style: TextStyle(fontSize: 40, color: Color(0xFF08A989), fontWeight: FontWeight.w600)),
-              const SizedBox(height: 25),
-              const Text('Welcome to Crop Care', style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.w500)),
-              const SizedBox(height: 40),
-              const Text(
-                'Detect crop diseases early, follow easy care steps, and embrace the healing power of horticulture while watching your garden flourish!',
-                style: TextStyle(fontSize: 20, color: Color(0xFFF3FCEB), fontWeight: FontWeight.w400, height: 1.5),
-                textAlign: TextAlign.justify,
-              ),
-            ],
+                const SizedBox(height: 25),
+                const Text('Crop Care', style: TextStyle(fontSize: 40, color: Color(0xFF08A989), fontWeight: FontWeight.w600)),
+                const SizedBox(height: 25),
+                const Text('Welcome to Crop Care', style: TextStyle(fontSize: 32, color: Colors.white, fontWeight: FontWeight.w500)),
+                const SizedBox(height: 40),
+                const Text(
+                  'Detect crop diseases early, follow easy care steps, and embrace the healing power of horticulture while watching your garden flourish!',
+                  style: TextStyle(fontSize: 20, color: Color(0xFFF3FCEB), fontWeight: FontWeight.w400, height: 1.5),
+                  textAlign: TextAlign.justify,
+                ),
+              ],
+            ),
           ),
         ),
       ),
