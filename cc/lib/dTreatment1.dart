@@ -58,6 +58,9 @@ class DTreatmentPage1 extends StatelessWidget {
         child: Card(
           elevation: 2,
           margin: const EdgeInsets.symmetric(vertical: 10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8), // Set the border radius to 8 for rounded corners
+          ),
           child: SizedBox(
             width: 350,
             height: 100,
@@ -67,6 +70,7 @@ class DTreatmentPage1 extends StatelessWidget {
                   color: const Color(0xFF528222),
                   width: 3.0,
                 ),
+                borderRadius: BorderRadius.circular(8), // Apply rounded corners to the container
               ),
               child: Row(
                 children: [
@@ -92,7 +96,11 @@ class DTreatmentPage1 extends StatelessWidget {
                         child: Text(
                           disease.name,
                           textAlign: TextAlign.left,
-                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.normal,
+                            fontFamily: 'Arial', // Set font to Arial
+                          ),
                         ),
                       ),
                     ),

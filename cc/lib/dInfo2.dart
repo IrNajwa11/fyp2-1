@@ -12,14 +12,16 @@ class DiseaseInfoPage2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final diseaseInfo = dinfo[disease.name] ?? {};
 
-    // Define adjustable text styles
+    // Define adjustable text styles with Arial font
     final TextStyle titleStyle = TextStyle(
       fontSize: 25.0,
       fontWeight: FontWeight.bold,
+      fontFamily: 'Arial', // Set font to Arial
     );
     final TextStyle bodyStyle = TextStyle(
       fontSize: 22.0,
       height: 1.5, // Increased line spacing
+      fontFamily: 'Arial', // Set font to Arial
     );
 
     // Fixed border color for the disease image

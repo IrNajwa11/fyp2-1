@@ -46,6 +46,7 @@ class BasePage extends StatelessWidget {
             style: const TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.bold,
+              fontFamily: 'Arial', // Set Arial font
             ),
             overflow: TextOverflow.ellipsis, // Prevent title overflow
           ),
@@ -76,7 +77,7 @@ class BasePage extends StatelessWidget {
         Color(0xFFBB593E),
         Color(0xFF4E73C7),
         Color(0xFF528222),
-        Color( 0xFFD03B80),
+        Color(0xFFD03B80),
       ], context),
     );
   }
@@ -97,7 +98,13 @@ class BasePage extends StatelessWidget {
           const SizedBox(height: 10), // Increase height for spacing
           Semantics(
             label: 'Text - Crop Care',
-            child: const Text('Crop Care', style: TextStyle(fontSize: 18)),
+            child: const Text(
+              'Crop Care',
+              style: TextStyle(
+                fontSize: 18,
+                fontFamily: 'Arial', // Set Arial font
+              ),
+            ),
           ),
         ],
       ),
@@ -133,7 +140,10 @@ class BasePage extends StatelessWidget {
             label: themeProvider.isDarkMode ? 'Light Mode' : 'Dark Mode',
             child: Text(
               themeProvider.isDarkMode ? 'Light Mode' : 'Dark Mode',
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(
+                fontSize: 18,
+                fontFamily: 'Arial', // Set Arial font
+              ),
             ),
           ),
         ],
@@ -159,7 +169,7 @@ class BasePage extends StatelessWidget {
               ),
             ),
           ),
-          label: _getLabelForIndex(index),
+          label: '', // Remove the label to only show the icon
         );
       }),
       currentIndex: selectedIndex,
@@ -213,7 +223,7 @@ class BasePage extends StatelessWidget {
       case 1: return Icons.menu_book_sharp; // Info
       case 2: return Icons.home; // Home
       case 3: return Icons.medical_services_sharp; // Treatment
-      case 4: return Icons.favorite; //favourite
+      case 4: return Icons.favorite; // Favourite
       default: return Icons.home; // Default icon
     }
   }

@@ -67,6 +67,7 @@ class DiseaseInfoPage1 extends StatelessWidget {
                   color: Color(0xFFBB593E),
                   width: 3.0,
                 ),
+                borderRadius: BorderRadius.circular(8.0), // Rounded button
               ),
               child: Row(
                 children: [
@@ -88,7 +89,11 @@ class DiseaseInfoPage1 extends StatelessWidget {
                       child: Text(
                         disease.name,
                         textAlign: TextAlign.left,
-                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+                        style: const TextStyle(
+                          fontSize: 24, 
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Arial', // Ensure Arial font is used
+                        ),
                         semanticsLabel: 'Disease name: ${disease.name}', // Text description for screen readers
                       ),
                     ),

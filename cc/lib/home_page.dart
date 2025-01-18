@@ -109,6 +109,7 @@ class HomePage extends StatelessWidget {
                   color: color,
                   width: 3.0,
                 ),
+                borderRadius: BorderRadius.circular(8), // Rounded corners for better accessibility
               ),
               child: Row(
                 children: [
@@ -124,7 +125,11 @@ class HomePage extends StatelessWidget {
                       child: Text(
                         label,
                         textAlign: TextAlign.left,
-                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight.normal),
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Arial', // Clear and accessible font
+                        ),
                       ),
                     ),
                   ),

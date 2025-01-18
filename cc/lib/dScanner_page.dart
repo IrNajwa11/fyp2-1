@@ -49,7 +49,7 @@ class _DScannerPageState extends State<DScannerPage> {
   Future<void> _loadModel() async {
     try {
       _interpreter = await Interpreter.fromAsset(
-          'assets/CropCare_mobilenetv3small.tflite');
+          'assets/CropCare_mobilenetv3small_TFLITE.tflite');
       setState(() {
         _modelLoaded = true;
       });
@@ -242,29 +242,37 @@ class _DScannerPageState extends State<DScannerPage> {
             const SizedBox(height: 20),
 
             // Capture Image Button with Camera Icon
-            IconButton(
-              onPressed: _captureImage,
-              icon: const Icon(Icons.camera_alt),
-              iconSize: 80,
-              color: Color(0xFF0A8484),
+            Semantics(
+              button: true,
+              label: 'Capture Image',
+              child: IconButton(
+                onPressed: _captureImage,
+                icon: const Icon(Icons.camera_alt),
+                iconSize: 80,
+                color: Color(0xFF0A8484),
+              ),
             ),
 
             const SizedBox(height: 20),
 
             // Import Image Button with Gallery Icon and Text
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _importImage,
-                icon: const Icon(Icons.photo_library),
-                label: const Text('Import Image from Gallery',
-                  style: TextStyle(fontSize: 18),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: isLightMode ? Colors.white : Colors.black,
-                  onPrimary: isLightMode ? Colors.black : Colors.white, // Text color
-                  side: const BorderSide(color: Color(0xFF0A8484), width: 5),
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            Semantics(
+              button: true,
+              label: 'Import Image from Gallery',
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: _importImage,
+                  icon: const Icon(Icons.photo_library),
+                  label: const Text('Import Image from Gallery',
+                    style: TextStyle(fontSize: 18, fontFamily: 'Arial'),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: isLightMode ? Colors.white : Colors.black,
+                    onPrimary: isLightMode ? Colors.black : Colors.white,
+                    side: const BorderSide(color: Color(0xFF0A8484), width: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  ),
                 ),
               ),
             ),
@@ -272,19 +280,23 @@ class _DScannerPageState extends State<DScannerPage> {
             const SizedBox(height: 20),
 
             // Scan and Predict Button with Styled Border and Size
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _predictDisease,
-                child: const Text(
-                  'Predict',
-                  style: TextStyle(fontSize: 18),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: isLightMode ? Colors.white : Colors.black,
-                  onPrimary: isLightMode ? Colors.black : Colors.white, // Text color
-                  side: const BorderSide(color: Color(0xFF0A8484), width: 5),
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            Semantics(
+              button: true,
+              label: 'Scan and Predict Disease',
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _predictDisease,
+                  child: const Text(
+                    'Predict',
+                    style: TextStyle(fontSize: 18, fontFamily: 'Arial'),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: isLightMode ? Colors.white : Colors.black,
+                    onPrimary: isLightMode ? Colors.black : Colors.white,
+                    side: const BorderSide(color: Color(0xFF0A8484), width: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  ),
                 ),
               ),
             ),

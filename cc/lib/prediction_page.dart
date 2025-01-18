@@ -34,15 +34,18 @@ class _PredictionPageState extends State<PredictionPage> {
       fontSize: 26.0,
       fontWeight: FontWeight.bold,
       color: Colors.white,
+      fontFamily: 'Arial', // Set font to Arial
     );
     final TextStyle bodyStyle = TextStyle(
       fontSize: 22.0,
       color: Colors.white70,
+      fontFamily: 'Arial', // Set font to Arial
     );
     final TextStyle boldBodyStyle = TextStyle(
       fontSize: 22.0,
       fontWeight: FontWeight.bold,
       color: Colors.white,
+      fontFamily: 'Arial', // Set font to Arial
     );
 
     final borderColor = widget.predictedDisease.toLowerCase().contains('healthy')
@@ -61,29 +64,32 @@ class _PredictionPageState extends State<PredictionPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Red warning message with shadow and rounded corners
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.redAccent,
-                    borderRadius: BorderRadius.circular(20.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'WARNING ! \n\n Prediction accuracy is too low to display results.',
-                        style: const TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                Semantics(
+                  label: 'Warning: Prediction accuracy is too low',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(20.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'WARNING ! \n\n Prediction accuracy is too low to display results.',
+                          style: const TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -137,9 +143,12 @@ class _PredictionPageState extends State<PredictionPage> {
                       ),
                       const SizedBox(height: 20),
                       // Display predicted disease name with placeholder '-'
-                      Text(
-                        'Predicted Disease: -',
-                        style: titleStyle,
+                      Semantics(
+                        label: 'Predicted Disease: ${widget.predictedDisease}',
+                        child: Text(
+                          'Predicted Disease: -',
+                          style: titleStyle,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       // Display causal agent and treatment as '-'
@@ -148,18 +157,21 @@ class _PredictionPageState extends State<PredictionPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Causal Agent: ',
-                                    style: boldBodyStyle,
-                                  ),
-                                  TextSpan(
-                                    text: '-',
-                                    style: bodyStyle,
-                                  ),
-                                ],
+                            Semantics(
+                              label: 'Causal Agent: -',
+                              child: Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'Causal Agent: ',
+                                      style: boldBodyStyle,
+                                    ),
+                                    TextSpan(
+                                      text: '-',
+                                      style: bodyStyle,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             const SizedBox(height: 20),
@@ -281,9 +293,12 @@ class _PredictionPageState extends State<PredictionPage> {
                     ),
                     const SizedBox(height: 20),
                     // Display predicted disease name
-                    Text(
-                      'Predicted Disease: ${widget.predictedDisease}',
-                      style: titleStyle,
+                    Semantics(
+                      label: 'Predicted Disease: ${widget.predictedDisease}',
+                      child: Text(
+                        'Predicted Disease: ${widget.predictedDisease}',
+                        style: titleStyle,
+                      ),
                     ),
                     const SizedBox(height: 20),
                     // Display causal agent and treatment info
@@ -293,18 +308,21 @@ class _PredictionPageState extends State<PredictionPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Causal Agent
-                          Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Causal Agent: ',
-                                  style: boldBodyStyle,
-                                ),
-                                TextSpan(
-                                  text: diseaseInfo['causalAgent'],
-                                  style: bodyStyle,
-                                ),
-                              ],
+                          Semantics(
+                            label: 'Causal Agent: ${diseaseInfo['causalAgent']}',
+                            child: Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Causal Agent: ',
+                                    style: boldBodyStyle,
+                                  ),
+                                  TextSpan(
+                                    text: diseaseInfo['causalAgent'],
+                                    style: bodyStyle,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const SizedBox(height: 20),

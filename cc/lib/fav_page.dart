@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart'; // Import intl package
 import 'base_page.dart'; // Import BasePage
 
 class FavouritePage extends StatefulWidget {
@@ -34,10 +34,11 @@ class _FavouritePageState extends State<FavouritePage> {
     setState(() {});
   }
 
-  // Format the date to day/month/year
+  // Format the date to day/month/year with time (AM/PM)
   String formatDate(String dateString) {
     final DateTime date = DateTime.parse(dateString);
-    return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+    final DateFormat formatter = DateFormat('dd/MM/yyyy hh:mm a'); // Format with AM/PM
+    return formatter.format(date);
   }
 
   @override
@@ -51,7 +52,11 @@ class _FavouritePageState extends State<FavouritePage> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: favoriteDiseases.isEmpty
-                ? [Text('No favorites yet', style: TextStyle(color: Colors.white))]
+                ? [
+                    Text('No favorites yet',
+                        style: TextStyle(
+                            color: Colors.white, fontFamily: 'Arial', fontSize: 16))
+                  ]
                 : favoriteDiseases.map((fav) {
                     // Parse the data stored as a string
                     final favData = fav.split(',');
@@ -61,23 +66,42 @@ class _FavouritePageState extends State<FavouritePage> {
                     final formattedDate = formatDate(date);
 
                     // Get the text color based on the theme mode
-                    final textColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black;
+                    final textColor = Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black;
 
                     return Column(
                       children: [
-                        ListTile(
-                          contentPadding: EdgeInsets.symmetric(vertical: 10),
-                          leading: Image.file(
-                            File(imagePath),
-                            width: 50,
-                            height: 50,
-                            fit: BoxFit.cover,
-                          ),
-                          title: Text(disease, style: TextStyle(color: textColor)),
-                          subtitle: Text(formattedDate, style: TextStyle(color: textColor)),
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => _deleteFavorite(favoriteDiseases.indexOf(fav)),
+                        Semantics(
+                          label: 'Disease: $disease, Date: $formattedDate',
+                          hint: 'Tap to delete favorite',
+                          child: ListTile(
+                            contentPadding: EdgeInsets.symmetric(vertical: 10),
+                            leading: Image.file(
+                              File(imagePath),
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                            title: Text(
+                              disease,
+                              style: TextStyle(
+                                  color: textColor,
+                                  fontFamily: 'Arial',
+                                  fontSize: 18),
+                            ),
+                            subtitle: Text(
+                              formattedDate,
+                              style: TextStyle(
+                                  color: textColor,
+                                  fontFamily: 'Arial',
+                                  fontSize: 14),
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete, color: Colors.red),
+                              onPressed: () =>
+                                  _deleteFavorite(favoriteDiseases.indexOf(fav)),
+                            ),
                           ),
                         ),
                         Container(

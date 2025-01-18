@@ -19,10 +19,12 @@ class DTreatmentPage2 extends StatelessWidget {
     final TextStyle titleStyle = TextStyle(
       fontSize: 25.0,
       fontWeight: FontWeight.bold,
+      fontFamily: 'Arial', // Use Arial font
     );
     final TextStyle bodyStyle = TextStyle(
       fontSize: 22.0,
       height: 1.5, // Increased line spacing for better readability
+      fontFamily: 'Arial', // Use Arial font
     );
 
     // Fixed border color for the disease image
