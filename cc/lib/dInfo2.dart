@@ -19,6 +19,7 @@ class DiseaseInfoPage2 extends StatelessWidget {
     );
     final TextStyle bodyStyle = TextStyle(
       fontSize: 22.0,
+      height: 1.5, // Increased line spacing
     );
 
     // Fixed border color for the disease image
@@ -188,7 +189,7 @@ class DiseaseInfoPage2 extends StatelessWidget {
                 child: Text(
                   symptom,
                   style: bodyStyle,
-                  textAlign: TextAlign.justify,
+                  textAlign: TextAlign.left, // Ensure text is not justified
                 ),
               ),
             ),

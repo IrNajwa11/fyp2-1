@@ -69,12 +69,12 @@ class HomePage extends StatelessWidget {
                 context,
                 'Favourite',
                 const Color(0xFFD03B80),
-                Icons.history,
+                Icons.favorite,
                 'Navigate to Favourite page',
                 () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FavoritePage()),
+                    MaterialPageRoute(builder: (context) => FavouritePage()),
                   );
                 },
               ),

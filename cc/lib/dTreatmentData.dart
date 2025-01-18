@@ -2,7 +2,7 @@ class DiseaseTreatmentData {
   static const List<Map<String, dynamic>> treatmentList = [
     {
       'label': 'Corn Cercospora Leaf Spot',
-      'image': 'assets/Corn_Grey Leaf Spot.jpg',
+      'image': 'assets/ccls.jpg',
       'description': 'Cercospora leaf spot is a fungal disease causing lesions on corn leaves.',
       'treatments': {
         'Cultural Practices': [
@@ -27,7 +27,7 @@ class DiseaseTreatmentData {
     },
     {
       'label': 'Corn Common Rust',
-      'image': 'assets/Corn_Common Rust.jpg',
+      'image': 'assets/ccr.jpg',
       'description': 'Common rust is a fungal disease causing pustules to form on the leaves of corn.',
       'treatments': {
         'Cultural Practices': [
@@ -48,7 +48,7 @@ class DiseaseTreatmentData {
     },
     {
       'label': 'Potato Early Blight',
-      'image': 'assets/Potato_Early Blight.jpg',
+      'image': 'assets/peb.jpg',
       'description': 'Early blight is a fungal disease causing dark, concentric rings on potato leaves.',
       'treatments': {
         'Cultural Practices': [
@@ -69,7 +69,7 @@ class DiseaseTreatmentData {
     },
     {
       'label': 'Potato Late Blight',
-      'image': 'assets/plb.JPG',
+      'image': 'assets/plb.jpg',
       'description': 'Late blight is a serious disease that causes rapid decay in potato plants.',
       'treatments': {
         'Cultural Practices': [
@@ -89,7 +89,7 @@ class DiseaseTreatmentData {
     },
     {
       'label': 'Tomato Early Blight',
-      'image': 'assets/teb.JPG',
+      'image': 'assets/teb.jpg',
       'description': 'Early blight causes dark lesions on tomato leaves and can spread quickly.',
       'treatments': {
         'Cultural Practices': [
@@ -109,7 +109,7 @@ class DiseaseTreatmentData {
     },
     {
       'label': 'Tomato Late Blight',
-      'image': 'assets/tlb.JPG',
+      'image': 'assets/tlb.jpg',
       'description': 'Late blight is caused by the same pathogen as potato late blight and affects tomato plants.',
       'treatments': {
         'Cultural Practices': [
@@ -129,7 +129,7 @@ class DiseaseTreatmentData {
     },
     {
       'label': 'Tomato Yellow Leaf Curl Virus',
-      'image': 'assets/tylcv.JPG',
+      'image': 'assets/ylcv.jpg',
       'description': 'This viral disease causes curling and yellowing of tomato leaves.',
       'treatments': {
         'Cultural Practices': [
@@ -149,7 +149,7 @@ class DiseaseTreatmentData {
     },
     {
       'label': 'Tomato Mosaic Virus',
-      'image': 'assets/Tomato_Mosaic Virus.png',
+      'image': 'assets/tmv.jpg',
       'description': 'This virus causes stunted growth, yellow spots, and distorted leaves on tomato plants.',
       'treatments': {
         'Cultural Practices': [

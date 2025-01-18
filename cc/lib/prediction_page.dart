@@ -1,16 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'base_page.dart'; // Import BasePage
-import 'dInfoData.dart'; // Mock data import
-import 'fav_page.dart'; // Import FavoritePage for navigation
+import 'dInfodata.dart'; // Import DiseaseInfoData
+import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 
-class PredictionPage extends StatelessWidget {
+class PredictionPage extends StatefulWidget {
   final File image;
   final List<double> predictionScores;
   final String predictedDisease;
   final double highestScore;
-
-  static int idCounter = 0; // Static variable to track the ID for each prediction
 
   const PredictionPage({
     Key? key,
@@ -21,86 +19,286 @@ class PredictionPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _PredictionPageState createState() => _PredictionPageState();
+}
+
+class _PredictionPageState extends State<PredictionPage> {
+  bool isFavorite = false; // Flag to track whether the icon is clicked
+
+  @override
   Widget build(BuildContext context) {
-    final diseaseInfo = DiseaseInfoData.diseaseList.firstWhere(
-        (disease) => disease['label'] == predictedDisease);
+    final diseaseInfo = DiseaseInfoData.diseaseList
+        .firstWhere((disease) => disease['label'] == widget.predictedDisease);
 
-    final TextStyle titleStyle = const TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold);
-    final TextStyle bodyStyle = const TextStyle(fontSize: 22.0);
+    final TextStyle titleStyle = TextStyle(
+      fontSize: 26.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
+    final TextStyle bodyStyle = TextStyle(
+      fontSize: 22.0,
+      color: Colors.white70,
+    );
+    final TextStyle boldBodyStyle = TextStyle(
+      fontSize: 22.0,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    );
 
-    final borderColor = predictedDisease.toLowerCase().contains('healthy')
+    final borderColor = widget.predictedDisease.toLowerCase().contains('healthy')
         ? const Color(0xFF0A8484)
-        : const Color(0xFFA7482E);
+        : const Color(0xFFBF5537);
 
-    final theme = Theme.of(context);
-    final gradientColors = theme.brightness == Brightness.light
-        ? [const Color(0xFF0A8484), Colors.white]
-        : [const Color(0xFF0A8484), const Color(0xFF121212)];
+    if (widget.highestScore < 0.60) {
+      return BasePage(
+        title: 'Prediction Result',
+        selectedIndex: 0,
+        onItemTapped: (index) {},
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Red warning message with shadow and rounded corners
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    borderRadius: BorderRadius.circular(20.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'WARNING ! \n\n Prediction accuracy is too low to display results.',
+                        style: const TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // Display the template with all info as '-'
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFF0A8484),
+                        Color.fromARGB(255, 36, 36, 36),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                    borderRadius: BorderRadius.circular(20.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 4,
+                        blurRadius: 6,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Image placeholder with border and shadow
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: borderColor, width: 4.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              blurRadius: 8.0,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.file(
+                            widget.image,
+                            height: 200,
+                            width: 200,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      // Display predicted disease name with placeholder '-'
+                      Text(
+                        'Predicted Disease: -',
+                        style: titleStyle,
+                      ),
+                      const SizedBox(height: 20),
+                      // Display causal agent and treatment as '-'
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Causal Agent: ',
+                                    style: boldBodyStyle,
+                                  ),
+                                  TextSpan(
+                                    text: '-',
+                                    style: bodyStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              'Treatment:',
+                              style: boldBodyStyle,
+                            ),
+                            const SizedBox(height: 10),
+                            buildNumberedTreatment(
+                              context,
+                              '-',
+                              bodyStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // Favorite Button
+                GestureDetector(
+                  onTap: isFavorite ? null : () async {
+                    setState(() {
+                      isFavorite = true; // Once clicked, mark as favorite and disable further clicks
+                    });
 
-    // Check if the disease is already in the favorites list
-    final isFavorited = FavoritePage.favoriteList.any((favorite) =>
-        favorite['disease'] == predictedDisease && favorite['image'] == image);
+                    final prefs = await SharedPreferences.getInstance();
+                    final favoriteData = {
+                      'imagePath': widget.image.path,
+                      'disease': widget.predictedDisease,
+                      'date': DateTime.now().toString(),
+                    };
+                    List<String> favorites = prefs.getStringList('favorites') ?? [];
+                    favorites.add(favoriteData.toString());
+                    await prefs.setStringList('favorites', favorites);
+                  },
+                  child: Column(
+                    children: [
+                      Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: isFavorite ? Color(0xFFD03B80) : Colors.white, // Filled icon when clicked
+                        size: 40.0,
+                      ),
+                      Text(
+                        'Favourite',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
     return BasePage(
       title: 'Prediction Result',
       selectedIndex: 0,
-      onItemTapped: (index) {
-        if (index == 1) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => FavoritePage()),
-          );
-        }
-      },
+      onItemTapped: (index) {},
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
+              // Gradient body container with shadow
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: gradientColors,
+                    colors: [
+                      const Color(0xFF0A8484),
+                      Color.fromARGB(255, 36, 36, 36),
+                    ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
+                    stops: [0.000000000001, 1.0],
                   ),
                   borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 4,
+                      blurRadius: 6,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
                 ),
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Image with a11y properties
+                    // Display the image with border and shadow
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: borderColor, width: 4.0),
+                        border: Border.all(
+                          color: borderColor,
+                          width: 4.0,
+                        ),
                         borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            blurRadius: 8.0,
+                            offset: Offset(0, 4),
+                          ),
+                        ],
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
                         child: Image.file(
-                          image,
+                          widget.image,
                           height: 200,
                           width: 200,
                           fit: BoxFit.cover,
-                          semanticLabel: 'Predicted disease image for $predictedDisease',
                         ),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text('Predicted Disease: $predictedDisease', style: titleStyle, semanticsLabel: 'Predicted Disease label: $predictedDisease'),
+                    // Display predicted disease name
+                    Text(
+                      'Predicted Disease: ${widget.predictedDisease}',
+                      style: titleStyle,
+                    ),
                     const SizedBox(height: 20),
+                    // Display causal agent and treatment info
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // Causal Agent
                           Text.rich(
                             TextSpan(
                               children: [
                                 TextSpan(
                                   text: 'Causal Agent: ',
-                                  style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
+                                  style: boldBodyStyle,
                                 ),
                                 TextSpan(
                                   text: diseaseInfo['causalAgent'],
@@ -108,13 +306,12 @@ class PredictionPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            semanticsLabel: 'Causal Agent: ${diseaseInfo['causalAgent']}',
                           ),
                           const SizedBox(height: 20),
+                          // Treatment
                           Text(
                             'Treatment:',
-                            style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
-                            semanticsLabel: 'Treatment label',
+                            style: boldBodyStyle,
                           ),
                           const SizedBox(height: 10),
                           buildNumberedTreatment(
@@ -126,43 +323,34 @@ class PredictionPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    // Favorite Button and Label with a11y
-                    Align(
-                      alignment: Alignment.topRight,
+                    // Favorite Button
+                    GestureDetector(
+                      onTap: isFavorite ? null : () async {
+                        setState(() {
+                          isFavorite = true; // Once clicked, mark as favorite and disable further clicks
+                        });
+
+                        final prefs = await SharedPreferences.getInstance();
+                        final favoriteData = {
+                          'imagePath': widget.image.path,
+                          'disease': widget.predictedDisease,
+                          'date': DateTime.now().toString(),
+                        };
+                        List<String> favorites = prefs.getStringList('favorites') ?? [];
+                        favorites.add(favoriteData.toString());
+                        await prefs.setStringList('favorites', favorites);
+                      },
                       child: Column(
                         children: [
-                          IconButton(
-                            iconSize: 36.0,
-                            icon: Icon(
-                              isFavorited ? Icons.favorite : Icons.favorite_border,
-                              color: isFavorited ? Color(0xFFD03B80) : null,
-                            ),
-                            onPressed: () {
-                              if (!isFavorited) {
-                                final favorite = {
-                                  'id': idCounter++,
-                                  'image': image,
-                                  'disease': predictedDisease,
-                                  'date': DateTime.now().toString(),
-                                };
-                                FavoritePage.addFavorite(favorite);
-                              }
-                              // Refresh UI
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PredictionPage(
-                                    image: image,
-                                    predictionScores: predictionScores,
-                                    predictedDisease: predictedDisease,
-                                    highestScore: highestScore,
-                                  ),
-                                ),
-                              );
-                            },
-                            tooltip: isFavorited ? 'Remove from favorites' : 'Add to favorites',
+                          Icon(
+                            isFavorite ? Icons.favorite : Icons.favorite_border,
+                            color: isFavorite ? Color(0xFFD03B80) : Colors.white, // Filled icon when clicked
+                            size: 40.0,
                           ),
-                          Text('Favourite', style: bodyStyle, semanticsLabel: 'Favourite label'), // The "Favourite" label below the button
+                          Text(
+                            'Favourite',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ],
                       ),
                     ),
@@ -177,26 +365,22 @@ class PredictionPage extends StatelessWidget {
   }
 
   Widget buildNumberedTreatment(
-      BuildContext context, String treatmentText, TextStyle textStyle) {
-    List<String> sentences = treatmentText.split('.');
-
-    List<Widget> formattedSentences = [];
-    for (int i = 0; i < sentences.length; i++) {
-      if (sentences[i].isNotEmpty) {
-        String sentence = sentences[i].trim();
-        formattedSentences.add(
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('${i + 1}. ', style: textStyle),
-              Expanded(
-                child: Text(sentence, style: textStyle),
-              ),
-            ],
+    BuildContext context,
+    String treatment,
+    TextStyle bodyStyle,
+  ) {
+    final treatmentList = treatment.split('\n');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: treatmentList.map((treatmentItem) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Text(
+            '• $treatmentItem',
+            style: bodyStyle,
           ),
         );
-      }
-    }
-    return Column(children: formattedSentences);
+      }).toList(),
+    );
   }
 }

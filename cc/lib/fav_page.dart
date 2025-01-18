@@ -1,124 +1,92 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Import intl package
-import 'base_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'base_page.dart'; // Import BasePage
 
-class FavoritePage extends StatelessWidget {
-  static List<Map<String, dynamic>> favoriteList = []; // Static list to hold favorite data
+class FavouritePage extends StatefulWidget {
+  @override
+  _FavouritePageState createState() => _FavouritePageState();
+}
 
-  // Method to add a favorite item
-  static void addFavorite(Map<String, dynamic> favorite) {
-    favoriteList.add(favorite);
+class _FavouritePageState extends State<FavouritePage> {
+  List<String> favoriteDiseases = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFavorites();
+  }
+
+  // Load favorites from SharedPreferences
+  _loadFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      favoriteDiseases = prefs.getStringList('favorites') ?? [];
+    });
+  }
+
+  // Delete favorite from SharedPreferences
+  _deleteFavorite(int index) async {
+    final prefs = await SharedPreferences.getInstance();
+    favoriteDiseases.removeAt(index);
+    await prefs.setStringList('favorites', favoriteDiseases);
+    setState(() {});
+  }
+
+  // Format the date to day/month/year
+  String formatDate(String dateString) {
+    final DateTime date = DateTime.parse(dateString);
+    return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final gradientColors = theme.brightness == Brightness.light
-        ? [const Color(0xFFD03B80), Colors.white]
-        : [const Color(0xFFD03B80), const Color(0xFF121212)];
-
     return BasePage(
-      title: 'Favourite Diseases',
-      selectedIndex: 4, // Make sure the second tab (Favorites) is selected
-      onItemTapped: (index) {
-        if (index == 0) {
-          Navigator.pop(context); // Return to the PredictionPage when tapped
-        }
-      },
+      title: 'Favourites',
+      selectedIndex: 4,
+      onItemTapped: (index) {},
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(  // Make the content scrollable
-            child: Column(
-              children: favoriteList.map((favorite) {
-                final disease = favorite['disease'];
-                final image = favorite['image'] as File;
-                final date = favorite['date']; // Get the date
-                final formattedDate = _formatDate(date); // Format the date
-                return Column(
-                  children: [
-                    _buildFavoriteItem(context, disease, image, formattedDate, favorite),
-                    const SizedBox(height: 20),
-                  ],
-                );
-              }).toList(),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+          child: Column(
+            children: favoriteDiseases.isEmpty
+                ? [Text('No favorites yet', style: TextStyle(color: Colors.white))]
+                : favoriteDiseases.map((fav) {
+                    // Parse the data stored as a string
+                    final favData = fav.split(',');
+                    final imagePath = favData[0].split(':')[1].trim();
+                    final disease = favData[1].split(':')[1].trim();
+                    final date = favData[2].split(':')[1].trim();
+                    final formattedDate = formatDate(date);
 
-  // Method to format the date into day-month-year format
-  String _formatDate(String date) {
-    try {
-      final DateTime parsedDate = DateTime.parse(date); // Parse the date string to DateTime
-      final DateFormat dateFormat = DateFormat('dd-MM-yyyy'); // Define the format
-      return dateFormat.format(parsedDate); // Return the formatted date
-    } catch (e) {
-      return date; // If parsing fails, return the original string (you can also handle errors here)
-    }
-  }
+                    // Get the text color based on the theme mode
+                    final textColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black;
 
-  // Widget to build each favorite item
-  Widget _buildFavoriteItem(BuildContext context, String disease, File image, String date, Map<String, dynamic> favorite) {
-    return GestureDetector(
-      onTap: () {
-        // Handle tap if needed
-      },
-      child: Card(
-        elevation: 2,
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        child: SizedBox(
-          width: 350,
-          height: 100,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color(0xFF0A8484),
-                width: 2.0,
-              ),
-            ),
-            child: Row(
-              children: [
-                ClipRRect(
-                  child: Image.file(image, height: 95, width: 85, fit: BoxFit.cover),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    return Column(
                       children: [
-                        Text(
-                          disease,
-                          style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.normal),
-                          overflow: TextOverflow.ellipsis,  // Allow overflow handling
-                          softWrap: true,  // Allow text to wrap to the next line if necessary
+                        ListTile(
+                          contentPadding: EdgeInsets.symmetric(vertical: 10),
+                          leading: Image.file(
+                            File(imagePath),
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          ),
+                          title: Text(disease, style: TextStyle(color: textColor)),
+                          subtitle: Text(formattedDate, style: TextStyle(color: textColor)),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete, color: Colors.red),
+                            onPressed: () => _deleteFavorite(favoriteDiseases.indexOf(fav)),
+                          ),
                         ),
-                        const SizedBox(height: 10),
-                        Text(
-                          'Predicted on: $date',  // Display the formatted prediction date
-                          style: const TextStyle(fontSize: 14.0, color: Colors.grey),
+                        Container(
+                          height: 2,
+                          color: Color(0xFFD03B80), // Thick separator line
                         ),
                       ],
-                    ),
-                  ),
-                ),
-                IconButton(
-                  iconSize: 30.0,
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  onPressed: () {
-                    // Remove the favorite item
-                    FavoritePage.favoriteList.remove(favorite);
-                    // Refresh the UI without navigation
-                    (context as Element).markNeedsBuild();
-                  },
-                ),
-              ],
-            ),
+                    );
+                  }).toList(),
           ),
         ),
       ),

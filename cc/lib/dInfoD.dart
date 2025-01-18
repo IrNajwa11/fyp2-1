@@ -1,4 +1,4 @@
-import 'disease.dart'; // Import the Disease class
+// Import the Disease class
 
 final Map<String, Map<String, dynamic>> dinfo = {
   'Corn Cercospora Leaf Spot': {

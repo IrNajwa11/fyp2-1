@@ -25,7 +25,7 @@ class _DScannerPageState extends State<DScannerPage> {
   bool _isImageCaptured = false;
 
   final List<String> _diseaseLabels = [
-    'Corn Grey Leaf Spot',
+    'Corn Cercospora Leaf Spot',
     'Corn Common Rust',
     'Corn Healthy',
     'Potato Early Blight',
@@ -226,14 +226,14 @@ class _DScannerPageState extends State<DScannerPage> {
             if (_isImageCaptured)
               Image.file(
                 _image!,
-                width: 300,
+                width: 250,
                 height: 250,
                 fit: BoxFit.cover,
               )
             else if (_isCameraInitialized)
               SizedBox(
-                width: 300,
-                height: 300,
+                width: 250,
+                height: 250,
                 child: CameraPreview(_cameraController),
               )
             else

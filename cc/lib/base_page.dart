@@ -199,7 +199,7 @@ class BasePage extends StatelessWidget {
       case 4:
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => FavoritePage()), // Navigate to History page
+          MaterialPageRoute(builder: (context) => FavouritePage()), // Navigate to History page
         );
         break;
       default:
@@ -213,7 +213,7 @@ class BasePage extends StatelessWidget {
       case 1: return Icons.menu_book_sharp; // Info
       case 2: return Icons.home; // Home
       case 3: return Icons.medical_services_sharp; // Treatment
-      case 4: return Icons.favorite; // History
+      case 4: return Icons.favorite; //favourite
       default: return Icons.home; // Default icon
     }
   }

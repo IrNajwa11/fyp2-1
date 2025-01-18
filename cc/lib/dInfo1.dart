@@ -5,14 +5,14 @@ import 'base_page.dart';
 
 class DiseaseInfoPage1 extends StatelessWidget {
   final List<Disease> diseases = [
-    Disease('Corn Cercospora Leaf Spot', 'assets/Corn_Grey Leaf Spot.jpg'),
-    Disease('Corn Common Rust', 'assets/Corn_Common Rust.jpg'),
-    Disease('Potato Early Blight', 'assets/Potato_Early Blight.jpg'),
-    Disease('Potato Late Blight', 'assets/plb.JPG'),
-    Disease('Tomato Early Blight', 'assets/teb.JPG'),
-    Disease('Tomato Late Blight', 'assets/tlb.JPG'),
-    Disease('Tomato Yellow Leaf Curl Virus', 'assets/tylcv.JPG'),
-    Disease('Tomato Mosaic Virus', 'assets/Tomato_Mosaic Virus.png'),
+    Disease('Corn Cercospora Leaf Spot', 'assets/ccls.jpg'),
+    Disease('Corn Common Rust', 'assets/ccr.jpg'),
+    Disease('Potato Early Blight', 'assets/peb.jpg'),
+    Disease('Potato Late Blight', 'assets/plb.jpg'),
+    Disease('Tomato Early Blight', 'assets/teb.jpg'),
+    Disease('Tomato Late Blight', 'assets/tlb.jpg'),
+    Disease('Tomato Yellow Leaf Curl Virus', 'assets/ylcv.jpg'),
+    Disease('Tomato Mosaic Virus', 'assets/tmv.jpg'),
   ];
 
   @override
