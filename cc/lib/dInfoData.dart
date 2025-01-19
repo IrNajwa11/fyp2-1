@@ -46,12 +46,6 @@ class DiseaseInfoData {
       'treatment': 'Remove infected plants.\nControl the vector (whiteflies) using insecticidal soap or neem oil.'
     },
     {
-      'label': 'Tomato Mosaic Virus',
-      'causalAgent': 'Virus, Tomato mosaic virus (ToMV)',
-      'symptoms': 'Mottled light and dark green patterns on leaves; distorted or curled leaf growth.',
-      'treatment': 'Remove infected plants.\nAvoid planting tomatoes in the same spot for at least a season.\nDisinfect tools and maintain good hygiene to prevent contact with infected plants.'
-    },
-    {
       'label': 'Tomato Healthy',
       'causalAgent': 'None',
       'treatment': 'No treatment necessary.'

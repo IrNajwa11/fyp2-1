@@ -1,4 +1,3 @@
-import 'package:cc/dTreatment2.dart';
 import 'package:flutter/material.dart';
 import 'dScanner_page.dart';
 import 'dInfo1.dart';

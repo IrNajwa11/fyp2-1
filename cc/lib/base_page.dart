@@ -40,7 +40,7 @@ class BasePage extends StatelessWidget {
           ),
         ),
         title: Semantics(
-          label: 'App Bar - $title',
+          label: '$title, Page',
           child: Text(
             title,
             style: const TextStyle(
@@ -118,7 +118,7 @@ class BasePage extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Semantics(
-            label: themeProvider.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+            label: themeProvider.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode Button',
             child: GestureDetector(
               onTap: themeProvider.toggleTheme,
               child: Container(
@@ -230,11 +230,11 @@ class BasePage extends StatelessWidget {
 
   String _getLabelForIndex(int index) {
     switch (index) {
-      case 0: return 'Scanner';
-      case 1: return 'Info';
-      case 2: return 'Home';
-      case 3: return 'Treatment';
-      case 4: return 'Favourite';
+      case 0: return 'Go to Disease Scanner Page ';
+      case 1: return 'Go to Disease Info Page ';
+      case 2: return 'Go to Home Page ';
+      case 3: return 'Go to Treatment Page ';
+      case 4: return 'Go to Favourite Page ';
       default: return '';
     }
   }

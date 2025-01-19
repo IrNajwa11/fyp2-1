@@ -12,7 +12,6 @@ class DTreatmentPage1 extends StatelessWidget {
     Disease('Tomato Early Blight', 'assets/teb.jpg'),
     Disease('Tomato Late Blight', 'assets/tlb.jpg'),
     Disease('Tomato Yellow Leaf Curl Virus', 'assets/ylcv.jpg'),
-    Disease('Tomato Mosaic Virus', 'assets/tmv.jpg'),
   ];
 
   @override
@@ -53,7 +52,7 @@ class DTreatmentPage1 extends StatelessWidget {
         );
       },
       child: Semantics(
-        label: 'Tap to view treatment for ${disease.name}',
+        label: 'View Disease Info of  ${disease.name}', // Indicate this is a clickable button
         button: true, // Indicate this is a button for screen readers
         child: Card(
           elevation: 2,
@@ -74,33 +73,27 @@ class DTreatmentPage1 extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Semantics(
-                    label: '${disease.name} image',
-                    child: Container(
-                      color: const Color(0xFF528222), // Updated button color
-                      width: 100,
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        disease.imagePath, // Use image path from Disease
-                        fit: BoxFit.cover,
-                        width: 90,
-                        height: 90,
-                      ),
+                  Container(
+                    color: const Color(0xFF528222), // Updated button color
+                    width: 100,
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      disease.imagePath, // Use image path from Disease
+                      fit: BoxFit.cover,
+                      width: 90,
+                      height: 90,
                     ),
                   ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(16),
-                      child: Semantics(
-                        label: 'Disease name: ${disease.name}',
-                        child: Text(
-                          disease.name,
-                          textAlign: TextAlign.left,
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.normal,
-                            fontFamily: 'Arial', // Set font to Arial
-                          ),
+                      child: Text(
+                        disease.name,
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'Arial', // Set font to Arial
                         ),
                       ),
                     ),

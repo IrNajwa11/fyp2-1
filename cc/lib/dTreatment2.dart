@@ -34,8 +34,14 @@ class DTreatmentPage2 extends StatelessWidget {
     final isLightMode = Theme.of(context).brightness == Brightness.light;
     final containerGradient = LinearGradient(
       colors: isLightMode
-          ? [const Color(0xFF598230), Color.fromARGB(255, 235, 220, 220)] // Gradient for light mode
-          : [const Color(0xFF598230), const Color(0xFF242424)], // Gradient for dark mode
+          ? [
+              const Color(0xFF598230),
+              Color.fromARGB(255, 235, 220, 220)
+            ] // Gradient for light mode
+          : [
+              const Color(0xFF598230),
+              const Color(0xFF242424)
+            ], // Gradient for dark mode
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       stops: [0.02, 1],
@@ -58,8 +64,11 @@ class DTreatmentPage2 extends StatelessWidget {
                     label: 'Image of ${diseaseTreatment['label']} disease',
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: borderColor, width: 5.0), // Border color and width
-                        borderRadius: BorderRadius.circular(10.0), // Optional: to round the corners of the border
+                        border: Border.all(
+                            color: borderColor,
+                            width: 5.0), // Border color and width
+                        borderRadius: BorderRadius.circular(
+                            10.0), // Optional: to round the corners of the border
                       ),
                       child: Image.asset(
                         diseaseTreatment['image'],
@@ -85,7 +94,7 @@ class DTreatmentPage2 extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Semantics(
-                        label: 'Disease label: ${diseaseTreatment['label']}',
+                        label: '${diseaseTreatment['label']} Treatment',
                         child: Text(
                           diseaseTreatment['label'] ?? 'Unknown Disease',
                           style: titleStyle,
@@ -93,9 +102,11 @@ class DTreatmentPage2 extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       Semantics(
-                        label: 'Disease description: ${diseaseTreatment['description']}',
+                        label:
+                            'Disease description: ${diseaseTreatment['description']}',
                         child: Text(
-                          diseaseTreatment['description'] ?? 'No description available.',
+                          diseaseTreatment['description'] ??
+                              'No description available.',
                           style: bodyStyle,
                         ),
                       ),
@@ -109,7 +120,8 @@ class DTreatmentPage2 extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      ...buildTreatmentSections(diseaseTreatment['treatments'], bodyStyle),
+                      ...buildTreatmentSections(
+                          diseaseTreatment['treatments'], bodyStyle),
                     ],
                   ),
                 ),
@@ -122,7 +134,8 @@ class DTreatmentPage2 extends StatelessWidget {
   }
 
   // Helper method for displaying treatment sections
-  List<Widget> buildTreatmentSections(Map<String, List<String>> treatments, TextStyle bodyStyle) {
+  List<Widget> buildTreatmentSections(
+      Map<String, List<String>> treatments, TextStyle bodyStyle) {
     return treatments.entries.map((entry) {
       final part = entry.key;
       final items = entry.value;
@@ -155,27 +168,24 @@ class DTreatmentPage2 extends StatelessWidget {
 
       return Padding(
         padding: const EdgeInsets.only(left: 20.0, top: 5.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Semantics(
-              label: 'Treatment #${index + 1}',
-              child: Text(
+        child: Semantics(
+          label: 'Treatment number ${index + 1} is $treatment',
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
                 '${index + 1}. ',
                 style: bodyStyle,
               ),
-            ),
-            Expanded(
-              child: Semantics(
-                label: 'Treatment description: $treatment',
+              Expanded(
                 child: Text(
                   treatment,
                   style: bodyStyle,
                   textAlign: TextAlign.left, // Left-aligned text
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     }).toList();

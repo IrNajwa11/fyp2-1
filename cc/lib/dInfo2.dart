@@ -179,7 +179,7 @@ class DiseaseInfoPage2 extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Semantics(
-              label: 'Symptom number: ${index + 1}', // Screen reader label for the number of symptoms
+              label: 'Symptom number ${index + 1} is: $symptom', // Combined label for symptom number and description
               child: Text(
                 '${index + 1}. ',
                 style: bodyStyle,

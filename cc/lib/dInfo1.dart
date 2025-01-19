@@ -12,7 +12,6 @@ class DiseaseInfoPage1 extends StatelessWidget {
     Disease('Tomato Early Blight', 'assets/teb.jpg'),
     Disease('Tomato Late Blight', 'assets/tlb.jpg'),
     Disease('Tomato Yellow Leaf Curl Virus', 'assets/ylcv.jpg'),
-    Disease('Tomato Mosaic Virus', 'assets/tmv.jpg'),
   ];
 
   @override
@@ -54,7 +53,6 @@ class DiseaseInfoPage1 extends StatelessWidget {
       },
       child: Semantics(
         button: true, // This marks the widget as a button for screen readers
-        label: 'Tap to view more information about ${disease.name}', // Screen reader description
         child: Card(
           elevation: 2,
           margin: const EdgeInsets.symmetric(vertical: 10),
@@ -80,7 +78,6 @@ class DiseaseInfoPage1 extends StatelessWidget {
                       fit: BoxFit.cover,
                       width: 90,
                       height: 90,
-                      semanticLabel: 'Image of ${disease.name}', // Image description
                     ),
                   ),
                   Expanded(
@@ -94,7 +91,7 @@ class DiseaseInfoPage1 extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           fontFamily: 'Arial', // Ensure Arial font is used
                         ),
-                        semanticsLabel: 'Disease name: ${disease.name}', // Text description for screen readers
+                        semanticsLabel: 'View Disease Info of : ${disease.name}', // Text description for screen readers
                       ),
                     ),
                   ),

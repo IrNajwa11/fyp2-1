@@ -69,7 +69,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/CropCare_mobilenetv3small_TFLITE.tflite
     - assets/CropCare_mobilenetv3small.tflite
     - assets/cropCare_logo.png
     - assets/ccls.jpg
@@ -81,7 +80,6 @@ flutter:
     - assets/teb.jpg
     - assets/th.jpg
     - assets/tlb.jpg
-    - assets/tmv.jpg
     - assets/ylcv.jpg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

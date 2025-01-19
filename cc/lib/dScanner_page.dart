@@ -34,7 +34,6 @@ class _DScannerPageState extends State<DScannerPage> {
     'Tomato Early Blight',
     'Tomato Late Blight',
     'Tomato Yellow Leaf Curl Virus',
-    'Tomato Mosaic Virus',
     'Tomato Healthy'
   ];
 
@@ -49,7 +48,7 @@ class _DScannerPageState extends State<DScannerPage> {
   Future<void> _loadModel() async {
     try {
       _interpreter = await Interpreter.fromAsset(
-          'assets/CropCare_mobilenetv3small_TFLITE.tflite');
+          'assets/CropCare_mobilenetv3small.tflite');
       setState(() {
         _modelLoaded = true;
       });

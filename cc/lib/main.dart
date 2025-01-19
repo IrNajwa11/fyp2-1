@@ -1,10 +1,7 @@
-import 'package:cc/dScanner_page.dart';
-import 'package:cc/dTreatment1.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'theme_provider.dart';
 import 'home_page.dart';
-import 'splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,7 +24,7 @@ class MyApp extends StatelessWidget {
                     primaryColor: Color(0xFF0A8484),
                     scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
                   ),
-            home: SplashScreen(),
+            home: HomePage(),
           );
         },
       ),

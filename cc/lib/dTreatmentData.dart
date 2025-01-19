@@ -147,25 +147,5 @@ class DiseaseTreatmentData {
         ],
       },
     },
-    {
-      'label': 'Tomato Mosaic Virus',
-      'image': 'assets/tmv.jpg',
-      'description': 'This virus causes stunted growth, yellow spots, and distorted leaves on tomato plants.',
-      'treatments': {
-        'Cultural Practices': [
-          'Remove and destroy infected plants immediately.',
-          'Avoid touching plants with contaminated tools.',
-          'Use disease-free seed to prevent introduction of the virus.'
-        ],
-        'Home Remedy': [
-          'Spray with a diluted vinegar solution to reduce the spread of the virus.',
-          'Use neem oil to manage insect vectors like aphids.'
-        ],
-        'Chemical Treatment': [
-          'There are no chemical treatments for viral diseases; management focuses on prevention.',
-          'Use insecticides to reduce the spread by aphids and whiteflies.'
-        ],
-      },
-    },
   ];
 }
