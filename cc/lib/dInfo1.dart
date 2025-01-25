@@ -51,38 +51,39 @@ class DiseaseInfoPage1 extends StatelessWidget {
           ),
         );
       },
-      child: Semantics(
-        button: true, // This marks the widget as a button for screen readers
-        child: Card(
-          elevation: 2,
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          child: SizedBox(
-            width: 350,
-            height: 100,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Color(0xFFBB593E),
-                  width: 3.0,
-                ),
-                borderRadius: BorderRadius.circular(8.0), // Rounded button
+      child: Card(
+        elevation: 2,
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        child: SizedBox(
+          width: 350,
+          height: 100,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Color(0xFFBB593E),
+                width: 3.0,
               ),
-              child: Row(
-                children: [
-                  Container(
-                    color: Color(0xFFBB593E),
-                    width: 100,
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      disease.imagePath,
-                      fit: BoxFit.cover,
-                      width: 90,
-                      height: 90,
-                    ),
+              borderRadius: BorderRadius.circular(8.0), // Rounded button
+            ),
+            child: Row(
+              children: [
+                Container(
+                  color: Color(0xFFBB593E),
+                  width: 100,
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    disease.imagePath,
+                    fit: BoxFit.cover,
+                    width: 90,
+                    height: 90,
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Semantics(
+                      button: true, // This marks the widget as a button for screen readers
+                      label: 'View Disease Info of: ${disease.name}', // This will be read by screen readers
                       child: Text(
                         disease.name,
                         textAlign: TextAlign.left,
@@ -91,12 +92,11 @@ class DiseaseInfoPage1 extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           fontFamily: 'Arial', // Ensure Arial font is used
                         ),
-                        semanticsLabel: 'View Disease Info of : ${disease.name}', // Text description for screen readers
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

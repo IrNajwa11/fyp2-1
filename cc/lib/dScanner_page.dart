@@ -70,6 +70,8 @@ class _DScannerPageState extends State<DScannerPage> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
               'Camera, storage, and notification permissions are required!')));
+
+      return;
     }
   }
 
@@ -168,7 +170,7 @@ class _DScannerPageState extends State<DScannerPage> {
       int height = 224;
 
       var inputImage = await preprocessImage(_image!, width, height);
-      var output = List.generate(1, (i) => List.filled(11, 0.0));
+      var output = List.generate(1, (i) => List.filled(10, 0.0));
 
       _interpreter.run(inputImage, output);
 
@@ -211,95 +213,104 @@ class _DScannerPageState extends State<DScannerPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Check the current theme mode (light or dark)
     bool isLightMode = Theme.of(context).brightness == Brightness.light;
 
     return BasePage(
       title: 'Disease Scanner',
       selectedIndex: _selectedIndex,
       onItemTapped: (index) => setState(() => _selectedIndex = index),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (_isImageCaptured)
-              Image.file(
-                _image!,
-                width: 250,
-                height: 250,
-                fit: BoxFit.cover,
-              )
-            else if (_isCameraInitialized)
-              SizedBox(
-                width: 250,
-                height: 250,
-                child: CameraPreview(_cameraController),
-              )
-            else
-              const CircularProgressIndicator(),
+      child: SingleChildScrollView(  // Added scroll view to ensure better spacing
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),  // Added vertical padding to center content
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (_isImageCaptured)
+                  Image.file(
+                    _image!,
+                    width: 250,
+                    height: 250,
+                    fit: BoxFit.cover,
+                  )
+                else if (_isCameraInitialized)
+                  SizedBox(
+                    width: 250,
+                    height: 250,
+                    child: CameraPreview(_cameraController),
+                  )
+                else
+                  const CircularProgressIndicator(),
 
-            const SizedBox(height: 20),
+                const SizedBox(height: 30),
 
-            // Capture Image Button with Camera Icon
-            Semantics(
-              button: true,
-              label: 'Capture Image',
-              child: IconButton(
-                onPressed: _captureImage,
-                icon: const Icon(Icons.camera_alt),
-                iconSize: 80,
-                color: Color(0xFF0A8484),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Import Image Button with Gallery Icon and Text
-            Semantics(
-              button: true,
-              label: 'Import Image from Gallery',
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: _importImage,
-                  icon: const Icon(Icons.photo_library),
-                  label: const Text('Import Image from Gallery',
-                    style: TextStyle(fontSize: 18, fontFamily: 'Arial'),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: isLightMode ? Colors.white : Colors.black,
-                    onPrimary: isLightMode ? Colors.black : Colors.white,
-                    side: const BorderSide(color: Color(0xFF0A8484), width: 5),
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                // Capture Image Button with Camera Icon only
+                Semantics(
+                  button: true,
+                  label: 'Capture Image for Prediction',
+                  child: GestureDetector(
+                    onTap: _captureImage,
+                    child: Icon(
+                      Icons.camera_alt,
+                      size: 100,
+                      color: Colors.teal,
+                    ),
                   ),
                 ),
-              ),
-            ),
 
-            const SizedBox(height: 20),
+                const SizedBox(height: 30),
 
-            // Scan and Predict Button with Styled Border and Size
-            Semantics(
-              button: true,
-              label: 'Scan and Predict Disease',
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _predictDisease,
-                  child: const Text(
-                    'Predict',
-                    style: TextStyle(fontSize: 18, fontFamily: 'Arial'),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: isLightMode ? Colors.white : Colors.black,
-                    onPrimary: isLightMode ? Colors.black : Colors.white,
-                    side: const BorderSide(color: Color(0xFF0A8484), width: 5),
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                // Import Image Button with Gallery Icon and Text
+                Semantics(
+                  button: true,
+                  label: 'Import Image from Gallery',
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _importImage,
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.teal,
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        'Import Image from Gallery',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+
+                const SizedBox(height: 30),
+
+                // Scan and Predict Button
+                Semantics(
+                  button: true,
+                  label: 'Scan and Predict Disease',
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _predictDisease,
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.teal,
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text(
+                        'Predict',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

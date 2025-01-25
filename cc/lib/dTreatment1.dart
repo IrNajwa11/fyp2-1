@@ -51,42 +51,44 @@ class DTreatmentPage1 extends StatelessWidget {
           ),
         );
       },
-      child: Semantics(
-        label: 'View Disease Info of  ${disease.name}', // Indicate this is a clickable button
-        button: true, // Indicate this is a button for screen readers
-        child: Card(
-          elevation: 2,
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8), // Set the border radius to 8 for rounded corners
-          ),
-          child: SizedBox(
-            width: 350,
-            height: 100,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: const Color(0xFF528222),
-                  width: 3.0,
-                ),
-                borderRadius: BorderRadius.circular(8), // Apply rounded corners to the container
+      child: Card(
+        elevation: 2,
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8), // Set the border radius to 8 for rounded corners
+        ),
+        child: SizedBox(
+          width: 350,
+          height: 100,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color(0xFF528222),
+                width: 3.0,
               ),
-              child: Row(
-                children: [
-                  Container(
-                    color: const Color(0xFF528222), // Updated button color
-                    width: 100,
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      disease.imagePath, // Use image path from Disease
-                      fit: BoxFit.cover,
-                      width: 90,
-                      height: 90,
-                    ),
+              borderRadius: BorderRadius.circular(8), // Apply rounded corners to the container
+            ),
+            child: Row(
+              children: [
+                // Image is excluded from Semantics, as it doesn't need to be described
+                Container(
+                  color: const Color(0xFF528222), // Updated button color
+                  width: 100,
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    disease.imagePath, // Use image path from Disease
+                    fit: BoxFit.cover,
+                    width: 90,
+                    height: 90,
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
+                ),
+                // Wrap only the disease name (text) with Semantics
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Semantics(
+                      label: 'View Disease Info of ${disease.name}', // Provide a label for screen readers
+                      button: true, // Indicate this is a button for screen readers
                       child: Text(
                         disease.name,
                         textAlign: TextAlign.left,
@@ -98,8 +100,8 @@ class DTreatmentPage1 extends StatelessWidget {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

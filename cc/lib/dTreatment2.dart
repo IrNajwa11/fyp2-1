@@ -58,24 +58,20 @@ class DTreatmentPage2 extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Wrap image in a container with border
+                // Wrap image in a container without semantics
                 Center(
-                  child: Semantics(
-                    label: 'Image of ${diseaseTreatment['label']} disease',
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: borderColor,
-                            width: 5.0), // Border color and width
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Optional: to round the corners of the border
-                      ),
-                      child: Image.asset(
-                        diseaseTreatment['image'],
-                        height: 150,
-                        width: 200,
-                        fit: BoxFit.cover,
-                      ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: borderColor,
+                          width: 5.0), // Border color and width
+                      borderRadius: BorderRadius.circular(10.0), // Optional: to round the corners of the border
+                    ),
+                    child: Image.asset(
+                      diseaseTreatment['image'],
+                      height: 150,
+                      width: 200,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -105,8 +101,7 @@ class DTreatmentPage2 extends StatelessWidget {
                         label:
                             'Disease description: ${diseaseTreatment['description']}',
                         child: Text(
-                          diseaseTreatment['description'] ??
-                              'No description available.',
+                          diseaseTreatment['description'] ?? 'No description available.',
                           style: bodyStyle,
                         ),
                       ),

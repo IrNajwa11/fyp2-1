@@ -49,22 +49,18 @@ class DiseaseInfoPage2 extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Wrap image in a container with border
+                // Image without Semantics widget
                 Center(
-                  child: Semantics(
-                    image: true,
-                    label: 'Image of ${disease.name}', // Image description for screen readers
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: borderColor, width: 5.0), // Border color and width
-                        borderRadius: BorderRadius.circular(10.0), // Optional: to round the corners of the border
-                      ),
-                      child: Image.asset(
-                        disease.imagePath,
-                        height: 150,
-                        width: 200,
-                        fit: BoxFit.cover,
-                      ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: borderColor, width: 5.0), // Border color and width
+                      borderRadius: BorderRadius.circular(10.0), // Optional: to round the corners of the border
+                    ),
+                    child: Image.asset(
+                      disease.imagePath,
+                      height: 150,
+                      width: 200,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -82,6 +78,7 @@ class DiseaseInfoPage2 extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Only the text wrapped in Semantics
                       Semantics(
                         label: diseaseInfo['label'] ?? 'Unknown Disease', // Screen reader description for the title
                         child: Text(
@@ -90,12 +87,12 @@ class DiseaseInfoPage2 extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Disease details
+                      // Disease details without Semantics widget, just styled text
                       buildRichText('Type', diseaseInfo['type'] ?? 'Unknown', bodyStyle),
                       const SizedBox(height: 20),
-                      buildRichText(
-                          'Causal Agent', diseaseInfo['causalAgent'] ?? 'Unknown', bodyStyle),
+                      buildRichText('Causal Agent', diseaseInfo['causalAgent'] ?? 'Unknown', bodyStyle),
                       const SizedBox(height: 20),
+                      // Symptom section wrapped in Semantics
                       Semantics(
                         label: 'Symptoms:', // Screen reader label for the symptoms section
                         child: Text(

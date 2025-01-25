@@ -23,7 +23,7 @@ class DiseaseInfoData {
     {
       'label': 'Potato Late Blight',
       'causalAgent': 'Oomycete, Phytophthora infestans',
-      'treatment': 'Regularly inspect plants for signs of the disease.\nRemove infected leaves promptly.\n3. Use fungicides like metalaxyl or mefenoxam, especially during humid, rainy periods.'
+      'treatment': 'Regularly inspect plants for signs of the disease.\nRemove infected leaves promptly.\nUse fungicides like metalaxyl or mefenoxam, especially during humid, rainy periods.'
     },
     {
       'label': 'Potato Healthy',

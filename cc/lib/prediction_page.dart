@@ -65,7 +65,7 @@ class _PredictionPageState extends State<PredictionPage> {
               children: [
                 // Red warning message with shadow and rounded corners
                 Semantics(
-                  label: 'Warning: Prediction accuracy is too low',
+                  label: 'Prediction accuracy is too low to display results.',
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.redAccent,
@@ -83,6 +83,7 @@ class _PredictionPageState extends State<PredictionPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        // Text is only for display, screen reader will only announce the label
                         Text(
                           'WARNING ! \n\n Prediction accuracy is too low to display results.',
                           style: const TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.bold),
@@ -92,7 +93,7 @@ class _PredictionPageState extends State<PredictionPage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 30), // Increased spacing
                 // Display the template with all info as '-'
                 Container(
                   decoration: BoxDecoration(
@@ -141,16 +142,20 @@ class _PredictionPageState extends State<PredictionPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 30), // Increased spacing
                       // Display predicted disease name with placeholder '-'
                       Semantics(
-                        label: 'Predicted Disease: ${widget.predictedDisease}',
+                        label: widget.highestScore < 0.60
+                            ? 'No prediction available due to low accuracy.'
+                            : 'Predicted Disease: ${widget.predictedDisease}',
                         child: Text(
-                          'Predicted Disease: -',
+                          widget.highestScore < 0.60
+                              ? 'Predicted Disease: No prediction'
+                              : 'Predicted Disease: ${widget.predictedDisease}',
                           style: titleStyle,
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 30), // Increased spacing
                       // Display causal agent and treatment as '-'
                       Align(
                         alignment: Alignment.centerLeft,
@@ -158,7 +163,7 @@ class _PredictionPageState extends State<PredictionPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Semantics(
-                              label: 'Causal Agent: -',
+                              label: 'Causal Agent: No Info',
                               child: Text.rich(
                                 TextSpan(
                                   children: [
@@ -167,22 +172,22 @@ class _PredictionPageState extends State<PredictionPage> {
                                       style: boldBodyStyle,
                                     ),
                                     TextSpan(
-                                      text: '-',
+                                      text: 'No Info',
                                       style: bodyStyle,
                                     ),
                                   ],
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 30), // Increased spacing
                             Text(
                               'Treatment:',
                               style: boldBodyStyle,
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 20), // Increased spacing
                             buildNumberedTreatment(
                               context,
-                              '-',
+                              'No info',
                               bodyStyle,
                             ),
                           ],
@@ -191,7 +196,7 @@ class _PredictionPageState extends State<PredictionPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 30), // Increased spacing
                 // Favorite Button
                 GestureDetector(
                   onTap: isFavorite ? null : () async {
@@ -291,16 +296,20 @@ class _PredictionPageState extends State<PredictionPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 30), // Increased spacing
                     // Display predicted disease name
                     Semantics(
-                      label: 'Predicted Disease: ${widget.predictedDisease}',
+                      label: widget.highestScore < 0.60
+                          ? 'No prediction available due to low accuracy.'
+                          : 'Predicted Disease: ${widget.predictedDisease}',
                       child: Text(
-                        'Predicted Disease: ${widget.predictedDisease}',
+                        widget.highestScore < 0.60
+                            ? 'Predicted Disease: No prediction'
+                            : 'Predicted Disease: ${widget.predictedDisease}',
                         style: titleStyle,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 30), // Increased spacing
                     // Display causal agent and treatment info
                     Align(
                       alignment: Alignment.centerLeft,
@@ -325,49 +334,16 @@ class _PredictionPageState extends State<PredictionPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          // Treatment
+                          const SizedBox(height: 30), // Increased spacing
                           Text(
                             'Treatment:',
                             style: boldBodyStyle,
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 20), // Increased spacing
                           buildNumberedTreatment(
                             context,
-                            diseaseInfo['treatment'] as String,
+                            diseaseInfo['treatment'],
                             bodyStyle,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Favorite Button
-                    GestureDetector(
-                      onTap: isFavorite ? null : () async {
-                        setState(() {
-                          isFavorite = true; // Once clicked, mark as favorite and disable further clicks
-                        });
-
-                        final prefs = await SharedPreferences.getInstance();
-                        final favoriteData = {
-                          'imagePath': widget.image.path,
-                          'disease': widget.predictedDisease,
-                          'date': DateTime.now().toString(),
-                        };
-                        List<String> favorites = prefs.getStringList('favorites') ?? [];
-                        favorites.add(favoriteData.toString());
-                        await prefs.setStringList('favorites', favorites);
-                      },
-                      child: Column(
-                        children: [
-                          Icon(
-                            isFavorite ? Icons.favorite : Icons.favorite_border,
-                            color: isFavorite ? Color(0xFFD03B80) : Colors.white, // Filled icon when clicked
-                            size: 40.0,
-                          ),
-                          Text(
-                            'Favourite',
-                            style: TextStyle(color: Colors.white),
                           ),
                         ],
                       ),
@@ -382,23 +358,37 @@ class _PredictionPageState extends State<PredictionPage> {
     );
   }
 
-  Widget buildNumberedTreatment(
-    BuildContext context,
-    String treatment,
-    TextStyle bodyStyle,
-  ) {
-    final treatmentList = treatment.split('\n');
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: treatmentList.map((treatmentItem) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: Text(
-            '• $treatmentItem',
-            style: bodyStyle,
-          ),
-        );
-      }).toList(),
+  Widget buildNumberedTreatment(BuildContext context, String? treatment, TextStyle bodyStyle) {
+    if (treatment == null || treatment.isEmpty) {
+      return Container();
+    }
+
+    final treatmentList = treatment.split(';').where((item) => item.trim().isNotEmpty).toList();
+    
+    return Expanded(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: treatmentList.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: '${index + 1}. ',
+                    style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(
+                    text: treatmentList[index].trim(),
+                    style: bodyStyle,
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

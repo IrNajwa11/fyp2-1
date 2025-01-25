@@ -16,11 +16,13 @@ class HomePage extends StatelessWidget {
       onItemTapped: (index) {
         // Handle navigation logic if needed (if BasePage needs to switch pages)
       },
-      child: Center(
+      child: Center( // Center the entire child widget
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center, // Ensure buttons are centered vertically
+            crossAxisAlignment: CrossAxisAlignment.center, // Ensure buttons are centered horizontally
+            mainAxisSize: MainAxisSize.min, // Ensure the column takes only as much space as needed
             children: [
               _buildAccessibleButton(
                 context,
@@ -92,50 +94,41 @@ class HomePage extends StatelessWidget {
       String semanticLabel,
       VoidCallback onTap) {
     return Semantics(
-      button: true,
-      label: semanticLabel,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Card(
-          elevation: 2,
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          child: SizedBox(
-            width: 350,
-            height: 100,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: color,
-                  width: 3.0,
+      button: true,  // Mark it as a button for accessibility
+      label: semanticLabel, // Ensure screen readers announce the correct navigation action
+      child: TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: color,
+          foregroundColor: Colors.white, // Change the text color here (set to white for example)
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(color: color, width: 3),
+          ),
+          minimumSize: Size(350, 100), // Ensure the button is large enough
+        ),
+        onPressed: onTap,
+        child: Row(
+          children: [
+            Container(
+              width: 100,
+              alignment: Alignment.center,
+              child: Icon(icon, color: Colors.white, size: 50),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  label,  // Show the button's title (optional for visual users)
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'Arial', // Clear and accessible font
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(8), // Rounded corners for better accessibility
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    color: color,
-                    width: 100,
-                    alignment: Alignment.center,
-                    child: Icon(icon, color: Colors.white, size: 50),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Text(
-                        label,
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'Arial', // Clear and accessible font
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
