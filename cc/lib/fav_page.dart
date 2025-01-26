@@ -1,16 +1,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart'; // Import intl package
-import 'base_page.dart'; // Import BasePage
+import 'package:intl/intl.dart';
+import 'base_page.dart';
 
-class FavouritePage extends StatefulWidget {
+class FavoritePage extends StatefulWidget {
+  const FavoritePage({Key? key}) : super(key: key);
+
   @override
-  _FavouritePageState createState() => _FavouritePageState();
+  _FavoritePageState createState() => _FavoritePageState();
 }
 
-class _FavouritePageState extends State<FavouritePage> {
-  List<String> favoriteDiseases = [];
+class _FavoritePageState extends State<FavoritePage> {
+  List<Map<String, String>> favoriteItems = [];
 
   @override
   void initState() {
@@ -18,99 +20,127 @@ class _FavouritePageState extends State<FavouritePage> {
     _loadFavorites();
   }
 
-  // Load favorites from SharedPreferences
-  _loadFavorites() async {
+  Future<void> _loadFavorites() async {
     final prefs = await SharedPreferences.getInstance();
+    List<String> favorites = prefs.getStringList('favorites') ?? [];
+
     setState(() {
-      favoriteDiseases = prefs.getStringList('favorites') ?? [];
+      favoriteItems = favorites.map((favorite) {
+        final Map<String, String> data = {};
+        final dataList = favorite.substring(1, favorite.length - 1).split(', ');
+        for (var item in dataList) {
+          final keyValue = item.split(': ');
+          if (keyValue.length == 2) {
+            data[keyValue[0]] = keyValue[1];
+          }
+        }
+        return data;
+      }).toList();
     });
   }
 
-  // Delete favorite from SharedPreferences
-  _deleteFavorite(int index) async {
+  Future<void> _deleteFavorite(int index) async {
     final prefs = await SharedPreferences.getInstance();
-    favoriteDiseases.removeAt(index);
-    await prefs.setStringList('favorites', favoriteDiseases);
-    setState(() {});
+    List<String> favorites = prefs.getStringList('favorites') ?? [];
+    favorites.removeAt(index);
+    await prefs.setStringList('favorites', favorites);
+    _loadFavorites();
   }
 
-  // Format the date to day/month/year with time (AM/PM)
-  String formatDate(String dateString) {
-    final DateTime date = DateTime.parse(dateString);
-    final DateFormat formatter = DateFormat('dd/MM/yyyy hh:mm a'); // Format with AM/PM
-    return formatter.format(date);
+  String _formatDate(String dateString) {
+    try {
+      final dateTime = DateTime.parse(dateString);
+      final dateFormatter = DateFormat('d/MM/yyyy');
+      final timeFormatter = DateFormat('h:mm a');
+      return '${dateFormatter.format(dateTime)} at ${timeFormatter.format(dateTime)}';
+    } catch (e) {
+      return 'Invalid date';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BasePage(
-      title: 'Favourites',
+      title: 'Favourite Prediction',
       selectedIndex: 4,
-      onItemTapped: (index) {},
+      onItemTapped: (index) {
+        // Handle bottom navigation actions if needed
+      },
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            children: favoriteDiseases.isEmpty
-                ? [
-                    Text('No favorites yet',
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'Arial', fontSize: 16))
-                  ]
-                : favoriteDiseases.map((fav) {
-                    // Parse the data stored as a string
-                    final favData = fav.split(',');
-                    final imagePath = favData[0].split(':')[1].trim();
-                    final disease = favData[1].split(':')[1].trim();
-                    final date = favData[2].split(':')[1].trim();
-                    final formattedDate = formatDate(date);
+            mainAxisSize: MainAxisSize.min,
+            children: favoriteItems.map((item) {
+              final imagePath = item['imagePath'];
+              final diseaseName = item['disease'] ?? 'Unknown Disease';
+              final date = _formatDate(item['date'] ?? 'No date');
+              return Column(
+                children: [
+                  Row(
+  children: [
+    Container(
+      width: 100,
+      height: 100,
+      alignment: Alignment.center,
+      child: imagePath != null
+          ? Image.file(
+              File(imagePath),
+              fit: BoxFit.cover,
+              width: 90,
+              height: 90,
+            )
+          : Icon(Icons.image, size: 90),
+    ),
+    const SizedBox(width: 16),
+    Expanded(
+      child: Semantics(
+        label: 'Disease: $diseaseName, Detected on $date', // Group the disease and date together
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              diseaseName,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              date,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.normal,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+    // Only the delete button will be identified as a button
+    Semantics(
+      label: 'Delete Favorited Prediction', // Define the label for the button
+      child: IconButton(
+        icon: Icon(Icons.delete, color: Colors.red),
+        iconSize: 40, // Increased icon size
+        onPressed: () {
+          // Get the index of the item clicked
+          int index = favoriteItems.indexOf(item);
+          _deleteFavorite(index); // Delete the item at the specific index
+        },
+      ),
+    )
+  ],
+),
 
-                    // Get the text color based on the theme mode
-                    final textColor = Theme.of(context).brightness == Brightness.dark
-                        ? Colors.white
-                        : Colors.black;
-
-                    return Column(
-                      children: [
-                        Semantics(
-                          label: 'Disease: $disease, Date: $formattedDate',
-                          hint: 'Tap to delete favorite',
-                          child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(vertical: 10),
-                            leading: Image.file(
-                              File(imagePath),
-                              width: 50,
-                              height: 50,
-                              fit: BoxFit.cover,
-                            ),
-                            title: Text(
-                              disease,
-                              style: TextStyle(
-                                  color: textColor,
-                                  fontFamily: 'Arial',
-                                  fontSize: 18),
-                            ),
-                            subtitle: Text(
-                              formattedDate,
-                              style: TextStyle(
-                                  color: textColor,
-                                  fontFamily: 'Arial',
-                                  fontSize: 14),
-                            ),
-                            trailing: IconButton(
-                              icon: Icon(Icons.delete, color: Colors.red),
-                              onPressed: () =>
-                                  _deleteFavorite(favoriteDiseases.indexOf(fav)),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 2,
-                          color: Color(0xFFD03B80), // Thick separator line
-                        ),
-                      ],
-                    );
-                  }).toList(),
+                  const SizedBox(height: 10),
+                  Divider(color: Colors.pink, thickness: 2),
+                  const SizedBox(height: 10),
+                ],
+              );
+            }).toList(),
           ),
         ),
       ),

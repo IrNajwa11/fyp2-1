@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'dScanner_page.dart';
 import 'dInfo1.dart';
 import 'dTreatment1.dart';
-import 'fav_page.dart';
 import 'base_page.dart';
+import 'fav_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -68,14 +68,14 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 20),
               _buildAccessibleButton(
                 context,
-                'Favourite',
+                'Favourite Prediction',
                 const Color(0xFFD03B80),
                 Icons.favorite,
-                'Navigate to Favourite page',
+                'Navigate to Favourite Prediction page',
                 () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => FavouritePage()),
+                    MaterialPageRoute(builder: (context) => FavoritePage()),
                   );
                 },
               ),
@@ -121,8 +121,8 @@ class HomePage extends StatelessWidget {
                   label,  // Show the button's title (optional for visual users)
                   textAlign: TextAlign.left,
                   style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.normal,
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
                     fontFamily: 'Arial', // Clear and accessible font
                   ),
                 ),

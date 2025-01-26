@@ -70,16 +70,19 @@ class DTreatmentPage1 extends StatelessWidget {
             ),
             child: Row(
               children: [
-                // Image is excluded from Semantics, as it doesn't need to be described
-                Container(
-                  color: const Color(0xFF528222), // Updated button color
-                  width: 100,
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    disease.imagePath, // Use image path from Disease
-                    fit: BoxFit.cover,
-                    width: 90,
-                    height: 90,
+                // Exclude image semantics
+                Semantics(
+                  excludeSemantics: true,
+                  child: Container(
+                    color: const Color(0xFF528222), // Updated button color
+                    width: 100,
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      disease.imagePath, // Use image path from Disease
+                      fit: BoxFit.cover,
+                      width: 90,
+                      height: 90,
+                    ),
                   ),
                 ),
                 // Wrap only the disease name (text) with Semantics
@@ -87,7 +90,7 @@ class DTreatmentPage1 extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Semantics(
-                      label: 'View Disease Info of ${disease.name}', // Provide a label for screen readers
+                      label: 'View Disease Treatment of ${disease.name}', // Provide a label for screen readers
                       button: true, // Indicate this is a button for screen readers
                       child: Text(
                         disease.name,

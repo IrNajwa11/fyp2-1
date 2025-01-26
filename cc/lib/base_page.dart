@@ -257,7 +257,7 @@ class BasePage extends StatelessWidget {
       case 3:
         return 'Disease Treatment';
       case 4:
-        return 'Favourite';
+        return 'Favourite Prediction';
       default:
         return 'Unknown';
     }
@@ -269,7 +269,7 @@ class BasePage extends StatelessWidget {
       DiseaseInfoPage1(),
       HomePage(),
       DTreatmentPage1(),
-      FavouritePage(),
+      FavoritePage(),
     ];
 
     Navigator.push(

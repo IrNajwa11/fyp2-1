@@ -3,7 +3,7 @@
 
     <!-- Application Configuration -->
     <application
-        android:label="cc"
+        android:label="CropCare"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true"> <!-- Keeps legacy storage access for backward compatibility -->
 
