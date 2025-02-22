@@ -8,21 +8,19 @@ import 'fav_page.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    int selectedIndex = 2; // Home is the 3rd item in the bottom nav
+    int selectedIndex = 2;
 
     return BasePage(
       title: 'Home',
       selectedIndex: selectedIndex,
-      onItemTapped: (index) {
-        // Handle navigation logic if needed (if BasePage needs to switch pages)
-      },
-      child: Center( // Center the entire child widget
+      onItemTapped: (index) {},
+      child: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center, // Ensure buttons are centered vertically
-            crossAxisAlignment: CrossAxisAlignment.center, // Ensure buttons are centered horizontally
-            mainAxisSize: MainAxisSize.min, // Ensure the column takes only as much space as needed
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               _buildAccessibleButton(
                 context,
@@ -86,25 +84,20 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildAccessibleButton(
-      BuildContext context,
-      String label,
-      Color color,
-      IconData icon,
-      String semanticLabel,
-      VoidCallback onTap) {
+  Widget _buildAccessibleButton(BuildContext context, String label, Color color,
+      IconData icon, String semanticLabel, VoidCallback onTap) {
     return Semantics(
-      button: true,  // Mark it as a button for accessibility
-      label: semanticLabel, // Ensure screen readers announce the correct navigation action
+      button: true,
+      label: semanticLabel,
       child: TextButton(
         style: TextButton.styleFrom(
           backgroundColor: color,
-          foregroundColor: Colors.white, // Change the text color here (set to white for example)
+          foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
             side: BorderSide(color: color, width: 3),
           ),
-          minimumSize: Size(350, 100), // Ensure the button is large enough
+          minimumSize: Size(350, 100),
         ),
         onPressed: onTap,
         child: Row(
@@ -118,12 +111,12 @@ class HomePage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
-                  label,  // Show the button's title (optional for visual users)
+                  label,
                   textAlign: TextAlign.left,
                   style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Arial', // Clear and accessible font
+                    fontFamily: 'Arial',
                   ),
                 ),
               ),

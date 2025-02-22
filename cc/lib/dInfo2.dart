@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dInfoD.dart';
-import 'disease.dart'; // Import the Disease class
-import 'base_page.dart'; // Import BasePage
+import 'disease.dart';
+import 'base_page.dart';
 
 class DiseaseInfoPage2 extends StatelessWidget {
   final Disease disease;
@@ -12,27 +12,23 @@ class DiseaseInfoPage2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final diseaseInfo = dinfo[disease.name] ?? {};
 
-    // Define adjustable text styles with Arial font
     final TextStyle titleStyle = TextStyle(
       fontSize: 25.0,
       fontWeight: FontWeight.bold,
-      fontFamily: 'Arial', // Set font to Arial
+      fontFamily: 'Arial',
     );
     final TextStyle bodyStyle = TextStyle(
       fontSize: 22.0,
-      height: 1.5, // Increased line spacing
-      fontFamily: 'Arial', // Set font to Arial
+      height: 1.5,
+      fontFamily: 'Arial',
     );
 
-    // Fixed border color for the disease image
     final borderColor = Color(0xFFBB593E);
-
-    // Determine the gradient based on the theme
     final isLightMode = Theme.of(context).brightness == Brightness.light;
     final containerGradient = LinearGradient(
       colors: isLightMode
-          ? [Color(0xFFBB593E), Color.fromARGB(255, 235, 220, 220)] // Gradient for light mode
-          : [Color(0xFFBB593E), const Color(0xFF242424)], // Gradient for dark mode
+          ? [Color(0xFFBB593E), Color.fromARGB(255, 235, 220, 220)]
+          : [Color(0xFFBB593E), const Color(0xFF242424)],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       stops: [0.02, 1],
@@ -49,12 +45,11 @@ class DiseaseInfoPage2 extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Image without Semantics widget
                 Center(
                   child: Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: borderColor, width: 5.0), // Border color and width
-                      borderRadius: BorderRadius.circular(10.0), // Optional: to round the corners of the border
+                      border: Border.all(color: borderColor, width: 5.0),
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: Image.asset(
                       disease.imagePath,
@@ -64,11 +59,9 @@ class DiseaseInfoPage2 extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 20), // Space between the image and content
-
-                // Gradient container for the details
+                SizedBox(height: 20),
                 Container(
-                  width: double.infinity, // Full width
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     gradient: containerGradient,
                     borderRadius: BorderRadius.circular(20.0),
@@ -78,23 +71,22 @@ class DiseaseInfoPage2 extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Only the text wrapped in Semantics
                       Semantics(
-                        label: diseaseInfo['label'] ?? 'Unknown Disease', // Screen reader description for the title
+                        label: diseaseInfo['label'] ?? 'Unknown Disease',
                         child: Text(
                           diseaseInfo['label'] ?? 'Unknown Disease',
                           style: titleStyle,
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Disease details without Semantics widget, just styled text
-                      buildRichText('Type', diseaseInfo['type'] ?? 'Unknown', bodyStyle),
+                      buildRichText(
+                          'Type', diseaseInfo['type'] ?? 'Unknown', bodyStyle),
                       const SizedBox(height: 20),
-                      buildRichText('Causal Agent', diseaseInfo['causalAgent'] ?? 'Unknown', bodyStyle),
+                      buildRichText('Causal Agent',
+                          diseaseInfo['causalAgent'] ?? 'Unknown', bodyStyle),
                       const SizedBox(height: 20),
-                      // Symptom section wrapped in Semantics
                       Semantics(
-                        label: 'Symptoms:', // Screen reader label for the symptoms section
+                        label: 'Symptoms:',
                         child: Text(
                           'Symptoms:',
                           style: titleStyle.copyWith(fontSize: 22),
@@ -114,10 +106,9 @@ class DiseaseInfoPage2 extends StatelessWidget {
     );
   }
 
-  // Helper method for displaying rich text
   Widget buildRichText(String title, String content, TextStyle bodyStyle) {
     return Semantics(
-      label: '$title: $content', // Combine title and content for screen readers
+      label: '$title: $content',
       child: Text.rich(
         TextSpan(
           children: [
@@ -135,7 +126,6 @@ class DiseaseInfoPage2 extends StatelessWidget {
     );
   }
 
-  // Helper method to build numbered symptom sections
   List<Widget> buildNumberedSymptomSections(
       Map<String, List<String>>? symptoms, TextStyle bodyStyle) {
     if (symptoms == null) return [];
@@ -150,7 +140,7 @@ class DiseaseInfoPage2 extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Semantics(
-              label: 'Symptom part: $part', // Screen reader label for each part of the symptoms
+              label: 'Symptom part: $part',
               child: Text(
                 part,
                 style: bodyStyle.copyWith(fontWeight: FontWeight.bold),
@@ -164,7 +154,6 @@ class DiseaseInfoPage2 extends StatelessWidget {
     }).toList();
   }
 
-  // Helper method to create a numbered list of symptoms
   List<Widget> buildNumberedList(List<String> items, TextStyle bodyStyle) {
     return items.asMap().entries.map((entry) {
       final index = entry.key;
@@ -176,7 +165,7 @@ class DiseaseInfoPage2 extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Semantics(
-              label: 'Symptom number ${index + 1} is: $symptom', // Combined label for symptom number and description
+              label: 'Symptom number ${index + 1} is: $symptom',
               child: Text(
                 '${index + 1}. ',
                 style: bodyStyle,
@@ -184,11 +173,11 @@ class DiseaseInfoPage2 extends StatelessWidget {
             ),
             Expanded(
               child: Semantics(
-                label: 'Symptom description: $symptom', // Symptom description for screen readers
+                label: 'Symptom description: $symptom',
                 child: Text(
                   symptom,
                   style: bodyStyle,
-                  textAlign: TextAlign.left, // Ensure text is not justified
+                  textAlign: TextAlign.left,
                 ),
               ),
             ),

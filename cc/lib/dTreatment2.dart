@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dTreatmentData.dart';
-import 'disease.dart'; // Import the Disease class
-import 'base_page.dart'; // Import BasePage
+import 'disease.dart';
+import 'base_page.dart';
 
 class DTreatmentPage2 extends StatelessWidget {
   final Disease disease;
@@ -15,33 +15,23 @@ class DTreatmentPage2 extends StatelessWidget {
       orElse: () => {},
     );
 
-    // Define adjustable text styles
     final TextStyle titleStyle = TextStyle(
       fontSize: 25.0,
       fontWeight: FontWeight.bold,
-      fontFamily: 'Arial', // Use Arial font
+      fontFamily: 'Arial',
     );
     final TextStyle bodyStyle = TextStyle(
       fontSize: 22.0,
-      height: 1.5, // Increased line spacing for better readability
-      fontFamily: 'Arial', // Use Arial font
+      height: 1.5,
+      fontFamily: 'Arial',
     );
 
-    // Fixed border color for the disease image
     final borderColor = const Color(0xFF598230);
-
-    // Determine the gradient based on the theme
     final isLightMode = Theme.of(context).brightness == Brightness.light;
     final containerGradient = LinearGradient(
       colors: isLightMode
-          ? [
-              const Color(0xFF598230),
-              Color.fromARGB(255, 235, 220, 220)
-            ] // Gradient for light mode
-          : [
-              const Color(0xFF598230),
-              const Color(0xFF242424)
-            ], // Gradient for dark mode
+          ? [const Color(0xFF598230), Color.fromARGB(255, 235, 220, 220)]
+          : [const Color(0xFF598230), const Color(0xFF242424)],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       stops: [0.02, 1],
@@ -58,14 +48,11 @@ class DTreatmentPage2 extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Wrap image in a container without semantics
                 Center(
                   child: Container(
                     decoration: BoxDecoration(
-                      border: Border.all(
-                          color: borderColor,
-                          width: 5.0), // Border color and width
-                      borderRadius: BorderRadius.circular(10.0), // Optional: to round the corners of the border
+                      border: Border.all(color: borderColor, width: 5.0),
+                      borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: Image.asset(
                       diseaseTreatment['image'],
@@ -75,11 +62,9 @@ class DTreatmentPage2 extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 20), // Space between the image and content
-
-                // Gradient container for the details
+                SizedBox(height: 20),
                 Container(
-                  width: double.infinity, // Full width
+                  width: double.infinity,
                   decoration: BoxDecoration(
                     gradient: containerGradient,
                     borderRadius: BorderRadius.circular(20.0),
@@ -101,12 +86,12 @@ class DTreatmentPage2 extends StatelessWidget {
                         label:
                             'Disease description: ${diseaseTreatment['description']}',
                         child: Text(
-                          diseaseTreatment['description'] ?? 'No description available.',
+                          diseaseTreatment['description'] ??
+                              'No description available.',
                           style: bodyStyle,
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Treatments
                       Semantics(
                         label: 'Treatments section',
                         child: Text(
@@ -128,7 +113,6 @@ class DTreatmentPage2 extends StatelessWidget {
     );
   }
 
-  // Helper method for displaying treatment sections
   List<Widget> buildTreatmentSections(
       Map<String, List<String>> treatments, TextStyle bodyStyle) {
     return treatments.entries.map((entry) {
@@ -155,7 +139,6 @@ class DTreatmentPage2 extends StatelessWidget {
     }).toList();
   }
 
-  // Helper method to create a numbered list of treatments
   List<Widget> buildNumberedList(List<String> items, TextStyle bodyStyle) {
     return items.asMap().entries.map((entry) {
       final index = entry.key;
@@ -176,7 +159,7 @@ class DTreatmentPage2 extends StatelessWidget {
                 child: Text(
                   treatment,
                   style: bodyStyle,
-                  textAlign: TextAlign.left, // Left-aligned text
+                  textAlign: TextAlign.left,
                 ),
               ),
             ],

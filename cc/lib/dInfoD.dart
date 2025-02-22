@@ -1,5 +1,3 @@
-// Import the Disease class
-
 final Map<String, Map<String, dynamic>> dinfo = {
   'Corn Cercospora Leaf Spot': {
     'label': 'Corn Cercospora Leaf Spot',

@@ -219,10 +219,13 @@ class _DScannerPageState extends State<DScannerPage> {
       title: 'Disease Scanner',
       selectedIndex: _selectedIndex,
       onItemTapped: (index) => setState(() => _selectedIndex = index),
-      child: SingleChildScrollView(  // Added scroll view to ensure better spacing
+      child: SingleChildScrollView(
+        // Added scroll view to ensure better spacing
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),  // Added vertical padding to center content
+            padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 50.0), // Added vertical padding to center content
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

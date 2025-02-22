@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dInfo2.dart';
-import 'disease.dart'; // Import the Disease class
+import 'disease.dart';
 import 'base_page.dart';
 
 class DiseaseInfoPage1 extends StatelessWidget {
@@ -18,10 +18,8 @@ class DiseaseInfoPage1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BasePage(
       title: 'Disease Information',
-      selectedIndex: 1, // Update if needed to reflect the correct navigation index
-      onItemTapped: (index) {
-        // Handle bottom navigation actions if applicable
-      },
+      selectedIndex: 1,
+      onItemTapped: (index) {},
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -63,11 +61,10 @@ class DiseaseInfoPage1 extends StatelessWidget {
                 color: Color(0xFFBB593E),
                 width: 3.0,
               ),
-              borderRadius: BorderRadius.circular(8.0), // Rounded button
+              borderRadius: BorderRadius.circular(8.0),
             ),
             child: Row(
               children: [
-                // Disable semantics for the image
                 Semantics(
                   excludeSemantics: true,
                   child: Container(
@@ -86,17 +83,15 @@ class DiseaseInfoPage1 extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Semantics(
-                      button:
-                          true, // This marks the widget as a button for screen readers
-                      label:
-                          'View Disease Info of: ${disease.name}', // This will be read by screen readers
+                      button: true,
+                      label: 'View Disease Info of: ${disease.name}',
                       child: Text(
                         disease.name,
                         textAlign: TextAlign.left,
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.normal,
-                          fontFamily: 'Arial', // Ensure Arial font is used
+                          fontFamily: 'Arial',
                         ),
                       ),
                     ),

@@ -63,9 +63,7 @@ class _FavoritePageState extends State<FavoritePage> {
     return BasePage(
       title: 'Favourite Prediction',
       selectedIndex: 4,
-      onItemTapped: (index) {
-        // Handle bottom navigation actions if needed
-      },
+      onItemTapped: (index) {},
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -78,63 +76,60 @@ class _FavoritePageState extends State<FavoritePage> {
               return Column(
                 children: [
                   Row(
-  children: [
-    Container(
-      width: 100,
-      height: 100,
-      alignment: Alignment.center,
-      child: imagePath != null
-          ? Image.file(
-              File(imagePath),
-              fit: BoxFit.cover,
-              width: 90,
-              height: 90,
-            )
-          : Icon(Icons.image, size: 90),
-    ),
-    const SizedBox(width: 16),
-    Expanded(
-      child: Semantics(
-        label: 'Disease: $diseaseName, Detected on $date', // Group the disease and date together
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              diseaseName,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              date,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.normal,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-    // Only the delete button will be identified as a button
-    Semantics(
-      label: 'Delete Favorited Prediction', // Define the label for the button
-      child: IconButton(
-        icon: Icon(Icons.delete, color: Colors.red),
-        iconSize: 40, // Increased icon size
-        onPressed: () {
-          // Get the index of the item clicked
-          int index = favoriteItems.indexOf(item);
-          _deleteFavorite(index); // Delete the item at the specific index
-        },
-      ),
-    )
-  ],
-),
-
+                    children: [
+                      Container(
+                        width: 100,
+                        height: 100,
+                        alignment: Alignment.center,
+                        child: imagePath != null
+                            ? Image.file(
+                                File(imagePath),
+                                fit: BoxFit.cover,
+                                width: 90,
+                                height: 90,
+                              )
+                            : Icon(Icons.image, size: 90),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Semantics(
+                          label: 'Disease: $diseaseName, Detected on $date',
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                diseaseName,
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                date,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Semantics(
+                        label: 'Delete Favorited Prediction',
+                        child: IconButton(
+                          icon: Icon(Icons.delete, color: Colors.red),
+                          iconSize: 40,
+                          onPressed: () {
+                            int index = favoriteItems.indexOf(item);
+                            _deleteFavorite(index);
+                          },
+                        ),
+                      )
+                    ],
+                  ),
                   const SizedBox(height: 10),
                   Divider(color: Colors.pink, thickness: 2),
                   const SizedBox(height: 10),

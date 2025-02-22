@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'base_page.dart';
-import 'disease.dart'; // Import the Disease class
-import 'dTreatment2.dart'; // Import DTreatmentPage2
+import 'disease.dart';
+import 'dTreatment2.dart';
 
 class DTreatmentPage1 extends StatelessWidget {
   final List<Disease> treatmentLabel = [
@@ -18,7 +18,7 @@ class DTreatmentPage1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return BasePage(
       title: 'Disease Treatment',
-      selectedIndex: 3, // Update if needed to reflect the correct navigation index
+      selectedIndex: 3,
       onItemTapped: (index) {},
       child: Center(
         child: Padding(
@@ -46,7 +46,7 @@ class DTreatmentPage1 extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => DTreatmentPage2(
-              disease: disease, // Pass the entire disease object
+              disease: disease,
             ),
           ),
         );
@@ -55,7 +55,7 @@ class DTreatmentPage1 extends StatelessWidget {
         elevation: 2,
         margin: const EdgeInsets.symmetric(vertical: 10),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8), // Set the border radius to 8 for rounded corners
+          borderRadius: BorderRadius.circular(8),
         ),
         child: SizedBox(
           width: 350,
@@ -66,39 +66,37 @@ class DTreatmentPage1 extends StatelessWidget {
                 color: const Color(0xFF528222),
                 width: 3.0,
               ),
-              borderRadius: BorderRadius.circular(8), // Apply rounded corners to the container
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               children: [
-                // Exclude image semantics
                 Semantics(
                   excludeSemantics: true,
                   child: Container(
-                    color: const Color(0xFF528222), // Updated button color
+                    color: const Color(0xFF528222),
                     width: 100,
                     alignment: Alignment.center,
                     child: Image.asset(
-                      disease.imagePath, // Use image path from Disease
+                      disease.imagePath,
                       fit: BoxFit.cover,
                       width: 90,
                       height: 90,
                     ),
                   ),
                 ),
-                // Wrap only the disease name (text) with Semantics
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Semantics(
-                      label: 'View Disease Treatment of ${disease.name}', // Provide a label for screen readers
-                      button: true, // Indicate this is a button for screen readers
+                      label: 'View Disease Treatment of ${disease.name}',
+                      button: true,
                       child: Text(
                         disease.name,
                         textAlign: TextAlign.left,
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.normal,
-                          fontFamily: 'Arial', // Set font to Arial
+                          fontFamily: 'Arial',
                         ),
                       ),
                     ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'theme_provider.dart';
 import 'package:provider/provider.dart';
-import 'dScanner_page.dart'; 
+import 'dScanner_page.dart';
 import 'dInfo1.dart';
 import 'home_page.dart';
 import 'dTreatment1.dart';
@@ -102,7 +102,8 @@ class BasePage extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildSemanticsImage('Logo - Crop Care', 'assets/cropCare_logo.png', 50),
+          _buildSemanticsImage(
+              'Logo - Crop Care', 'assets/cropCare_logo.png', 50),
           const SizedBox(height: 10),
           _buildSemanticsText('Text - Crop Care', 'Crop Care', 18),
         ],
@@ -153,7 +154,9 @@ class BasePage extends StatelessWidget {
 
   Semantics _buildSemanticsThemeToggle(ThemeProvider themeProvider) {
     return Semantics(
-      label: themeProvider.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+      label: themeProvider.isDarkMode
+          ? 'Switch to Light Mode'
+          : 'Switch to Dark Mode',
       child: GestureDetector(
         onTap: themeProvider.toggleTheme,
         child: Container(
@@ -180,7 +183,7 @@ class BasePage extends StatelessWidget {
         onItemTapped(index);
         _navigateToPage(context, index);
       },
-      type: BottomNavigationBarType.fixed, // Ensure continuous row of icons
+      type: BottomNavigationBarType.fixed,
     );
   }
 
@@ -207,13 +210,13 @@ class BasePage extends StatelessWidget {
       duration: Duration(milliseconds: 300),
       curve: Curves.easeOut,
       decoration: BoxDecoration(
-        color: itemColors[index], // Set color for the button by default
+        color: itemColors[index],
         borderRadius: BorderRadius.circular(10),
         boxShadow: selectedIndex == index
             ? [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.2),
-                  offset: Offset(0, -5), // Elevate when selected
+                  offset: Offset(0, -5),
                   blurRadius: 8,
                 ),
               ]
@@ -223,8 +226,8 @@ class BasePage extends StatelessWidget {
       width: 150,
       child: Icon(
         _getIconForIndex(index),
-        color: selectedIndex == index ? Colors.white : Colors.black, // White when selected
-        size: 30,  // Increased icon size
+        color: selectedIndex == index ? Colors.white : Colors.black,
+        size: 30,
       ),
     );
   }

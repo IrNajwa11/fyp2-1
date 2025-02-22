@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'base_page.dart'; // Import BasePage
-import 'dInfodata.dart'; // Import DiseaseInfoData
-import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
+import 'base_page.dart';
+import 'dInfodata.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PredictionPage extends StatefulWidget {
   final File image;
@@ -23,7 +23,7 @@ class PredictionPage extends StatefulWidget {
 }
 
 class _PredictionPageState extends State<PredictionPage> {
-  bool isFavorite = false; // Flag to track whether the icon is clicked
+  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,36 +34,36 @@ class _PredictionPageState extends State<PredictionPage> {
       fontSize: 26.0,
       fontWeight: FontWeight.bold,
       color: Colors.white,
-      fontFamily: 'Arial', // Set font to Arial
+      fontFamily: 'Arial',
     );
     final TextStyle bodyStyle = TextStyle(
       fontSize: 22.0,
       color: Colors.white70,
-      fontFamily: 'Arial', // Set font to Arial
+      fontFamily: 'Arial',
     );
     final TextStyle boldBodyStyle = TextStyle(
       fontSize: 22.0,
       fontWeight: FontWeight.bold,
       color: Colors.white,
-      fontFamily: 'Arial', // Set font to Arial
+      fontFamily: 'Arial',
     );
 
-    final borderColor = widget.predictedDisease.toLowerCase().contains('healthy')
-        ? const Color(0xFF0A8484)
-        : const Color(0xFFBF5537);
+    final borderColor =
+        widget.predictedDisease.toLowerCase().contains('healthy')
+            ? const Color(0xFF0A8484)
+            : const Color(0xFFBF5537);
 
-    if (widget.highestScore < 0.65) {
+    if (widget.highestScore < 0.80) {
       return BasePage(
         title: 'Prediction Result',
         selectedIndex: 0,
         onItemTapped: (index) {},
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(30.0),  // Increased padding
+            padding: const EdgeInsets.all(30.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Red warning message with shadow and rounded corners
                 Semantics(
                   label: 'Warning: Prediction accuracy is too low',
                   child: Container(
@@ -79,21 +79,23 @@ class _PredictionPageState extends State<PredictionPage> {
                         ),
                       ],
                     ),
-                    padding: const EdgeInsets.all(25.0),  // Increased padding
+                    padding: const EdgeInsets.all(25.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'WARNING ! \n\n Prediction accuracy is too low to display results.',
-                          style: const TextStyle(fontSize: 22.0, color: Colors.white, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontSize: 22.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),  // Larger space between sections
-                // Display the template with all info as '-'
+                const SizedBox(height: 30),
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -114,11 +116,10 @@ class _PredictionPageState extends State<PredictionPage> {
                       ),
                     ],
                   ),
-                  padding: const EdgeInsets.all(25.0),  // Increased padding
+                  padding: const EdgeInsets.all(25.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Image placeholder with border and shadow
                       Container(
                         decoration: BoxDecoration(
                           border: Border.all(color: borderColor, width: 4.0),
@@ -135,14 +136,13 @@ class _PredictionPageState extends State<PredictionPage> {
                           borderRadius: BorderRadius.circular(10.0),
                           child: Image.file(
                             widget.image,
-                            height: 220,  // Increased image size
-                            width: 220,  // Increased image size
+                            height: 220,
+                            width: 220,
                             fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),  // Larger space between image and text
-                      // Display predicted disease name with placeholder '-'
+                      const SizedBox(height: 30),
                       Semantics(
                         label: 'Predicted Disease: No prediction',
                         child: Text(
@@ -150,8 +150,7 @@ class _PredictionPageState extends State<PredictionPage> {
                           style: titleStyle,
                         ),
                       ),
-                      const SizedBox(height: 30),  // Larger space between sections
-                      // Display causal agent and treatment as '-'
+                      const SizedBox(height: 30),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Column(
@@ -174,12 +173,12 @@ class _PredictionPageState extends State<PredictionPage> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 30),  // Larger space between sections
+                            const SizedBox(height: 30),
                             Text(
                               'Treatment:',
                               style: boldBodyStyle,
                             ),
-                            const SizedBox(height: 20),  // Larger space between treatment title and items
+                            const SizedBox(height: 20),
                             buildNumberedTreatment(
                               context,
                               'No Info',
@@ -191,32 +190,34 @@ class _PredictionPageState extends State<PredictionPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 30),  // Larger space before the Favorite Button
-                // Favorite Button
+                const SizedBox(height: 30),
                 GestureDetector(
-                  onTap: isFavorite ? null : () async {
-                    setState(() {
-                      isFavorite = true; // Once clicked, mark as favorite and disable further clicks
-                    });
+                  onTap: isFavorite
+                      ? null
+                      : () async {
+                          setState(() {
+                            isFavorite = true;
+                          });
 
-                    final prefs = await SharedPreferences.getInstance();
-                    final favoriteData = {
-                      'imagePath': widget.image.path,
-                      'disease': widget.predictedDisease,
-                      'date': DateTime.now().toString(),
-                    };
-                    List<String> favorites = prefs.getStringList('favorites') ?? [];
-                    favorites.add(favoriteData.toString());
-                    await prefs.setStringList('favorites', favorites);
-                  },
+                          final prefs = await SharedPreferences.getInstance();
+                          final favoriteData = {
+                            'imagePath': widget.image.path,
+                            'disease': widget.predictedDisease,
+                            'date': DateTime.now().toString(),
+                          };
+                          List<String> favorites =
+                              prefs.getStringList('favorites') ?? [];
+                          favorites.add(favoriteData.toString());
+                          await prefs.setStringList('favorites', favorites);
+                        },
                   child: Column(
                     children: [
                       Icon(
                         isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: isFavorite ? Color(0xFFD03B80) : Colors.white, // Filled icon when clicked
-                        size: 45.0,  // Increased icon size
+                        color: isFavorite ? Color(0xFFD03B80) : Colors.white,
+                        size: 45.0,
                       ),
-                      const SizedBox(height: 10),  // Larger space between icon and text
+                      const SizedBox(height: 10),
                       Text(
                         'Favourite',
                         style: TextStyle(color: Colors.white),
@@ -237,10 +238,9 @@ class _PredictionPageState extends State<PredictionPage> {
       onItemTapped: (index) {},
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(30.0),  // Increased padding
+          padding: const EdgeInsets.all(30.0),
           child: Column(
             children: [
-              // Gradient body container with shadow
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -262,11 +262,10 @@ class _PredictionPageState extends State<PredictionPage> {
                     ),
                   ],
                 ),
-                padding: const EdgeInsets.all(25.0),  // Increased padding
+                padding: const EdgeInsets.all(25.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Display the image with border and shadow
                     Container(
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -286,14 +285,13 @@ class _PredictionPageState extends State<PredictionPage> {
                         borderRadius: BorderRadius.circular(10.0),
                         child: Image.file(
                           widget.image,
-                          height: 220,  // Increased image size
-                          width: 220,  // Increased image size
+                          height: 220,
+                          width: 220,
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30),  // Larger space between image and text
-                    // Display predicted disease name
+                    const SizedBox(height: 30),
                     Semantics(
                       label: 'Predicted Disease: ${widget.predictedDisease}',
                       child: Text(
@@ -301,16 +299,15 @@ class _PredictionPageState extends State<PredictionPage> {
                         style: titleStyle,
                       ),
                     ),
-                    const SizedBox(height: 30),  // Larger space between sections
-                    // Display causal agent and treatment info
+                    const SizedBox(height: 30),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Causal Agent
                           Semantics(
-                            label: 'Causal Agent: ${diseaseInfo['causalAgent']}',
+                            label:
+                                'Causal Agent: ${diseaseInfo['causalAgent']}',
                             child: Text.rich(
                               TextSpan(
                                 children: [
@@ -326,13 +323,12 @@ class _PredictionPageState extends State<PredictionPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 30),  // Larger space between sections
-                          // Treatment
+                          const SizedBox(height: 30),
                           Text(
                             'Treatment:',
                             style: boldBodyStyle,
                           ),
-                          const SizedBox(height: 20),  // Larger space between treatment title and items
+                          const SizedBox(height: 20),
                           buildNumberedTreatment(
                             context,
                             diseaseInfo['treatment'] as String,
@@ -341,37 +337,41 @@ class _PredictionPageState extends State<PredictionPage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 30),  // Larger space before the Favorite Button
-                    // Favorite Button
+                    const SizedBox(height: 30),
                     GestureDetector(
-                      onTap: isFavorite ? null : () async {
-                        setState(() {
-                          isFavorite = true; // Once clicked, mark as favorite and disable further clicks
-                        });
+                      onTap: isFavorite
+                          ? null
+                          : () async {
+                              setState(() {
+                                isFavorite = true;
+                              });
 
-                        final prefs = await SharedPreferences.getInstance();
-                        final favoriteData = {
-                          'imagePath': widget.image.path,
-                          'disease': widget.predictedDisease,
-                          'date': DateTime.now().toString(),
-                        };
-                        List<String> favorites = prefs.getStringList('favorites') ?? [];
-                        favorites.add(favoriteData.toString());
-                        await prefs.setStringList('favorites', favorites);
-                      },
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              final favoriteData = {
+                                'imagePath': widget.image.path,
+                                'disease': widget.predictedDisease,
+                                'date': DateTime.now().toString(),
+                              };
+                              List<String> favorites =
+                                  prefs.getStringList('favorites') ?? [];
+                              favorites.add(favoriteData.toString());
+                              await prefs.setStringList('favorites', favorites);
+                            },
                       child: Column(
                         children: [
                           Icon(
                             isFavorite ? Icons.favorite : Icons.favorite_border,
-                            color: isFavorite ? Color(0xFFD03B80) : Colors.white, // Filled icon when clicked
-                            size: 60.0,  // Increased icon size
+                            color:
+                                isFavorite ? Color(0xFFD03B80) : Colors.white,
+                            size: 60.0,
                           ),
-                          const SizedBox(height: 10),  // Larger space between icon and text
+                          const SizedBox(height: 10),
                           Text(
                             'Favourite',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18.0, // Increased font size
+                              fontSize: 18.0,
                             ),
                           ),
                         ],
@@ -387,22 +387,23 @@ class _PredictionPageState extends State<PredictionPage> {
     );
   }
 
-  Widget buildNumberedTreatment(BuildContext context, String treatment, TextStyle style) {
-  final treatmentList = treatment.split('\n');
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: List.generate(
-      treatmentList.length,
-      (index) => Column(
-        children: [
-          Text(
-            '${index + 1}. ${treatmentList[index]}',
-            style: style,
-          ),
-          const SizedBox(height: 15),  // Increased space between each treatment item
-        ],
+  Widget buildNumberedTreatment(
+      BuildContext context, String treatment, TextStyle style) {
+    final treatmentList = treatment.split('\n');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: List.generate(
+        treatmentList.length,
+        (index) => Column(
+          children: [
+            Text(
+              '${index + 1}. ${treatmentList[index]}',
+              style: style,
+            ),
+            const SizedBox(height: 15),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }
