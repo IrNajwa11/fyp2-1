@@ -48,7 +48,7 @@ class _DScannerPageState extends State<DScannerPage> {
   Future<void> _loadModel() async {
     try {
       _interpreter = await Interpreter.fromAsset(
-          'assets/CropCare_mobilenetv3small_finetuned.tflite');
+          'assets/CropCare_mobilenetv3small_model.tflite');
       setState(() {
         _modelLoaded = true;
       });
