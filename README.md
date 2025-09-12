@@ -17,7 +17,7 @@ CropCare is an AI-driven mobile app designed to help users diagnose plant diseas
 1. **Clone the repository:**  
    ```sh
    git clone https://github.com/IrNajwa11/fyp2-1.git
-   cd CropCare
+   cd cc
    ```
 2. **Install dependencies:**  
    ```sh
