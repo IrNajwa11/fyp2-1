@@ -279,7 +279,7 @@ class _DScannerPageState extends State<DScannerPage> {
                       ),
                       child: const Text(
                         'Import Image from Gallery',
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: 22),
                       ),
                     ),
                   ),
@@ -297,7 +297,7 @@ class _DScannerPageState extends State<DScannerPage> {
                       onPressed: _predictDisease,
                       style: ElevatedButton.styleFrom(
                         primary: Colors.teal,
-                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 22),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

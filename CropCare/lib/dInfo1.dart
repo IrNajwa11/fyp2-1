@@ -89,7 +89,7 @@ class DiseaseInfoPage1 extends StatelessWidget {
                         disease.name,
                         textAlign: TextAlign.left,
                         style: const TextStyle(
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.normal,
                           fontFamily: 'Arial',
                         ),

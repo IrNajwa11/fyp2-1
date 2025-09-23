@@ -114,7 +114,7 @@ class HomePage extends StatelessWidget {
                   label,
                   textAlign: TextAlign.left,
                   style: const TextStyle(
-                    fontSize: 32,
+                    fontSize: 28,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'Arial',
                   ),
